@@ -142,7 +142,7 @@ $fetch.createAction("get_todos", {
           //   console.log(item.link + " vs " + item.name);
           // });
 
-          // initMap(dataGeoJsonFormatted);
+          initMap(dataGeoJsonFormatted);
 
         } else {
           // 200 but no results
@@ -421,7 +421,7 @@ async function loadCustomMarkersAndLayers(data) {
 
 // CRUX
 
-
+function initMap(dataGeoJsonFormatted) {
   map.on("load", async () => {
     console.log("map on load");
 
@@ -619,7 +619,7 @@ async function loadCustomMarkersAndLayers(data) {
     //     });
     // // end: click on legend items
   }); // map load
-
+}
 
 // When the user begins typing, hide the suggestions placeholder text
 $("#search").on("input", function () {
