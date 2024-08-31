@@ -441,7 +441,7 @@ function initMap(dataGeoJsonFormatted) {
     //   }`;
     // const data =  dataRes.json();
 
-    const data = JSON.parse(dataRes);
+    const data = JSON.parse(dataGeoJsonFormatted);
 
 
 
