@@ -142,7 +142,7 @@ $fetch.createAction("get_todos", {
           //   console.log(item.link + " vs " + item.name);
           // });
 
-          initMap(dataGeoJsonFormatted);
+          // initMap(dataGeoJsonFormatted);
 
         } else {
           // 200 but no results
@@ -420,17 +420,14 @@ async function loadCustomMarkersAndLayers(data) {
 /////////////////////////////
 
 // CRUX
-function initMap(dataGeoJsonFormatted) {
 
-
-  console.log("init map");
 
   map.on("load", async () => {
     console.log("map on load");
 
     // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET
-    const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
-    const data = await dataRes.json();
+    //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
+    //const data = await dataRes.json();
 
     // BUT WE'RE GOING TO FORM A GEOJSON ON THE FLY FROM THE ALPHI DATA INSTEAD (SEE ABOVE)
 
@@ -468,7 +465,7 @@ function initMap(dataGeoJsonFormatted) {
             if (error) throw error;
 
             map.addImage("w-cluster", image);
-            loadCustomMarkersAndLayers(data);
+            loadCustomMarkersAndLayers(dataGeoJsonFormatted);
           }
         );
       });
@@ -622,7 +619,7 @@ function initMap(dataGeoJsonFormatted) {
     //     });
     // // end: click on legend items
   }); // map load
-} // initMap
+
 
 // When the user begins typing, hide the suggestions placeholder text
 $("#search").on("input", function () {
