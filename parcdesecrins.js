@@ -183,18 +183,7 @@ function createShopLink(card) {
   return "/shop-detail?id=" + card.author;
 }
 
-// Maptiler
 
-maptilersdk.config.apiKey = "fsCLuIQWGPlRskWhImQz";
-var map = new maptilersdk.Map({
-  container: "map",
-  zoom: 11.5,
-  center: [6.079625696485338, 45.05582527284327],
-  style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
-  //terrain: true,
-  // terrainExaggeration: 2,
-  antialias: true,
-});
 
 console.log("Are tiles loaded : " + map.areTilesLoaded());
 
@@ -417,6 +406,19 @@ async function loadCustomMarkersAndLayers(data) {
 
 // CRUX
 function initMap(dataGeoJsonFormatted) {
+  // Maptiler
+
+  maptilersdk.config.apiKey = "fsCLuIQWGPlRskWhImQz";
+  var map = new maptilersdk.Map({
+    container: "map",
+    zoom: 11.5,
+    center: [6.079625696485338, 45.05582527284327],
+    style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
+    //terrain: true,
+    // terrainExaggeration: 2,
+    antialias: true,
+  });
+
 
   console.log("init map");
 
