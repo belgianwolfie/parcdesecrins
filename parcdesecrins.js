@@ -145,7 +145,7 @@ function getData() {
               return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
             })}]}`;
 
-            console.log("dataGeoJsonFormatted" + dataGeoJsonFormatted);
+
 
             // PUT THE DATA INTO THE MAP
             loadCustomMarkersAndLayers(dataGeoJsonFormatted);
@@ -349,6 +349,9 @@ function getUniqueIcons(dataGeoJsonFormatted) {
   const gfxFolder = googleBucketUrl + "/map"; // Replace with the path to your "gfx" folder
 
   const uniqueIcons = new Set();
+
+  console.log("dataGeoJsonFormatted.features" + dataGeoJsonFormatted.features);
+
 
   // Loop through the "features" array and extract "icon" values
   dataGeoJsonFormatted.features.forEach((feature) => {
