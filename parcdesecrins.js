@@ -418,6 +418,8 @@ async function loadCustomMarkersAndLayers(data) {
 // CRUX
 function initMap(dataGeoJsonFormatted) {
 
+  console.log("init map");
+
   map.on("load", async () => {
     console.log("map on load");
 
