@@ -350,7 +350,7 @@ function getUniqueIcons(dataGeoJsonFormatted) {
 
   const uniqueIcons = new Set();
 
-  console.log("dataGeoJsonFormatted.features" + dataGeoJsonFormatted.features);
+  console.log("dataGeoJsonFormatted.features" + dataGeoJsonFormatted);
 
 
   // Loop through the "features" array and extract "icon" values
