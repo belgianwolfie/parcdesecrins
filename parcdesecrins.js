@@ -345,13 +345,13 @@ function createCheckboxesNew(id) {
 // END: legend filtering
 
 // START: get unique icons from geodata
-function getUniqueIcons(data) {
+function getUniqueIcons(dataGeoJsonFormatted) {
   const gfxFolder = googleBucketUrl + "/map"; // Replace with the path to your "gfx" folder
 
   const uniqueIcons = new Set();
 
   // Loop through the "features" array and extract "icon" values
-  data.features.forEach((feature) => {
+  dataGeoJsonFormatted.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
       uniqueIcons.add(feature.properties.icon);
     }
@@ -434,6 +434,28 @@ async function loadCustomMarkersAndLayers(dataGeoJsonFormatted) {
       "text-color": "#ffffff",
     },
   });
+
+   // /* start: if you want circles in stead of icons
+   map.addLayer({
+    id: "point-layer",
+    type: "symbol",
+    source: "earthquakes",
+    filter: ["!", ["has", "point_count"]],
+    layout: {
+      "icon-image": [
+        "case",
+        ["==", ["get", "icon"], "restaurantz"],
+        "restaurantz",
+        ["==", ["get", "icon"], "walk"],
+        "walk",
+        "walk", // default cause 'case'
+      ],
+      "icon-size": iconSize,
+      "icon-allow-overlap": true,
+      "icon-ignore-placement": true, // icon will not push away underlaying village names.
+    },
+  });
+  // end: if you want circles */
 
 
 }
@@ -566,27 +588,7 @@ async function loadCustomMarkersAndLayers(dataGeoJsonFormatted) {
     // weatherLayer.animateByFactor(3600);
     // end : rain layer
 
-    // /* start: if you want circles in stead of icons
-    map.addLayer({
-      id: "point-layer",
-      type: "symbol",
-      source: "earthquakes",
-      filter: ["!", ["has", "point_count"]],
-      layout: {
-        "icon-image": [
-          "case",
-          ["==", ["get", "icon"], "restaurantz"],
-          "restaurantz",
-          ["==", ["get", "icon"], "walk"],
-          "walk",
-          "walk", // default cause 'case'
-        ],
-        "icon-size": iconSize,
-        "icon-allow-overlap": true,
-        "icon-ignore-placement": true, // icon will not push away underlaying village names.
-      },
-    });
-    // end: if you want circles */
+
 
     // inspect a cluster on click
     map.on("click", "cluster-layer", function (e) {
