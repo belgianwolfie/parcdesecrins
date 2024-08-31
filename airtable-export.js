@@ -15,6 +15,7 @@ const config = {
   filename: process.env.GITHUB_FILENAME || 'data.json'
 }
 
+console.log("airtableToken: " + airtableToken);
 const CREATE_MESSAGE = 'Create dump'
 const UPDATE_MESSAGE = 'Update dump (if something has changed)'
 
