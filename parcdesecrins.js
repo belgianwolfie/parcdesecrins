@@ -426,8 +426,8 @@ function initMap(dataGeoJsonFormatted) {
     console.log("map on load");
 
     // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET
-    //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
-    //const data = await dataRes.json();
+    const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
+    const data = await dataRes.json();
 
     // BUT WE'RE GOING TO FORM A GEOJSON ON THE FLY FROM THE ALPHI DATA INSTEAD (SEE ABOVE)
 
@@ -445,7 +445,7 @@ function initMap(dataGeoJsonFormatted) {
     //   }`;
     // const data =  dataRes.json();
 
-    const data = JSON.parse(dataGeoJsonFormatted);
+    // const data = JSON.parse(dataGeoJsonFormatted);
 
 
 
