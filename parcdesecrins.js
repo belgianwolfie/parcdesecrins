@@ -73,10 +73,7 @@ $fetch.createAction("get_todos", {
           console.log("We have " + data.length + " results!");
           console.log(data[0].link);
 
-          // create static geojson object to feed to MapTiler
-          data.forEach((item) => {
-            console.log(item.link + " vs " + item.name);
-          });
+
 
           // resultaat bar
           let result_text = data.length == 1 ? "result" : "results";
@@ -99,7 +96,38 @@ $fetch.createAction("get_todos", {
             $fetch.triggerAction("get_todos");
           });
 
-          initMap();
+          // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+          // "features": [
+          // { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
+          // { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
+          // { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
+          // { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
+          // { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
+          // { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
+          // { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
+          // { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
+          // ]
+          // }`;
+
+
+          // data.forEach((item) => {
+          //   console.log(item.link + " vs " + item.name);
+          // });
+          // const dataGeoJsonFormatted =
+
+          const dataGeoJsonFormatted = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
+          `"features": [${data.map((item) => {
+            return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": ${item.mag}, "time": ${item.time}, "felt": ${item.felt}, "tsunami": ${item.tsunami}, "icon" : "${item.icon}" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
+          })}]}`;
+
+          console.log(dataGeoJsonFormatted);
+
+          // create static geojson object to feed to MapTiler
+          // data.forEach((item) => {
+          //   console.log(item.link + " vs " + item.name);
+          // });
+
+          initMap(dataGeoJsonFormatted);
 
         } else {
           // 200 but no results
