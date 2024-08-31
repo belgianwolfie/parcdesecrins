@@ -31,141 +31,148 @@ $app.createComponent("cards", initialData).mount("#cards");
 
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
 // This is being triggered by the x-fetch="get_todos" in <body> and then later by the "Search button"
-$fetch.createAction("get_todos", {
-  options: {
-    method: "get",
-    //    "url": alphiBaseUrl + "?endpoint=home&name=" + searchterm,
-    url: alphiBaseUrl,
-    headers: [
-      {
-        key: "Content-Type",
-        value: "application/json",
-      },
-    ],
-    body: [],
-  },
-  integrations: {
-    authentication: console.log("triggered" + document.getElementById("search").value),
-  },
-  events: {
-    onTrigger: {
-      callback: console.log("triggered for :" + document.getElementById("search").value),
+function getData() {
+  $fetch.createAction("get_todos", {
+    options: {
+      method: "get",
+      //    "url": alphiBaseUrl + "?endpoint=home&name=" + searchterm,
+      url: alphiBaseUrl,
+      headers: [
+        {
+          key: "Content-Type",
+          value: "application/json",
+        },
+      ],
+      body: [],
     },
-    onRequestInit: {
-      callback: async (options, triggerEl) => {
-        console.log("Initializing alphi request");
-        // show/hide some stuff
-        document.getElementById("loading-animation").style.display = "block";
-        // document.getElementById('results').style.display = "none";
+    integrations: {
+      authentication: console.log("triggered" + document.getElementById("search").value),
+    },
+    events: {
+      onTrigger: {
+        callback: console.log("triggered for :" + document.getElementById("search").value),
+      },
+      onRequestInit: {
+        callback: async (options, triggerEl) => {
+          console.log("Initializing alphi request");
+          // show/hide some stuff
+          document.getElementById("loading-animation").style.display = "block";
+          // document.getElementById('results').style.display = "none";
 
-        // Change button text
-        document.getElementById("btnSearch").value = document.getElementById("btnSearch").dataset.wait;
+          // Change button text
+          document.getElementById("btnSearch").value = document.getElementById("btnSearch").dataset.wait;
 
-        //const id = triggerEl?.parentElement?.querySelector("[airtable-id]")?.textContent
-        if (document.getElementById("search").value !== "") {
-          console.log("searchterm entered and adding it to the fetch url");
-          // set the value dynamically
-          options.url = alphiBaseUrl + "?endpoint=home&name=" + document.getElementById("search").value.toLowerCase();
+          //const id = triggerEl?.parentElement?.querySelector("[airtable-id]")?.textContent
+          if (document.getElementById("search").value !== "") {
+            console.log("searchterm entered and adding it to the fetch url");
+            // set the value dynamically
+            options.url = alphiBaseUrl + "?endpoint=home&name=" + document.getElementById("search").value.toLowerCase();
 
-          // return the updated options
+            // return the updated options
+            return options;
+          }
+
+          // searchterm empty so return all results (from initial options object)
           return options;
-        }
-
-        // searchterm empty so return all results (from initial options object)
-        return options;
+        },
       },
-    },
-    onSuccess: {
-      redirectUrl: null,
-      showElement: "#results",
-      hideElement: "#loading-animation",
-      callback: async (response, data) => {
-        // Change button text
-        document.getElementById("btnSearch").value = btnDefaultValue;
+      onSuccess: {
+        redirectUrl: null,
+        showElement: "#results",
+        hideElement: "#loading-animation",
+        callback: async (response, data) => {
+          // Change button text
+          document.getElementById("btnSearch").value = btnDefaultValue;
 
-        if (data.length > 0) {
-          // we have results, send to component
-          console.log("We have " + data.length + " results!");
-          console.log(data[0].link);
-
+          if (data.length > 0) {
+            // we have results, send to component
+            console.log("We have " + data.length + " results!");
+            console.log(data[0].link);
 
 
-          // resultaat bar
-          let result_text = data.length == 1 ? "result" : "results";
-          let result_searchterm =
-            document.getElementById("search").value.toLowerCase() == ""
-              ? ""
-              : ' for <b>"' + document.getElementById("search").value.toLowerCase() + '"</b>';
-          $("#totalresults").html("<b>" + data.length + "</b> " + result_text + result_searchterm);
 
-          $app.components.cards.store.listings = data;
+            // resultaat bar
+            let result_text = data.length == 1 ? "result" : "results";
+            let result_searchterm =
+              document.getElementById("search").value.toLowerCase() == ""
+                ? ""
+                : ' for <b>"' + document.getElementById("search").value.toLowerCase() + '"</b>';
+            $("#totalresults").html("<b>" + data.length + "</b> " + result_text + result_searchterm);
 
-          // show/hide
-          document.getElementById("no-results").style.display = "none";
-          document.getElementById("cards").style.display = "block";
-          document.getElementById("toolbar").style.display = "block";
+            // PUT THE DATA INTO THE CARDS
+            $app.components.cards.store.listings = data;
 
-          // this needs to be here cause .tag is dynamic
-          $(".tag").on("click", function () {
-            $("#search").val($(this).text()).trigger("input"); // trigger is needed to trigger below input trigger function and add has--value class
-            $fetch.triggerAction("get_todos");
-          });
+            // show/hide
+            document.getElementById("no-results").style.display = "none";
+            document.getElementById("cards").style.display = "block";
+            document.getElementById("toolbar").style.display = "block";
 
-          // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-          // "features": [
-          // { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
-          // { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
-          // { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-          // { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
-          // { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
-          // { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
-          // { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-          // { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
-          // ]
-          // }`;
+            // this needs to be here cause .tag is dynamic
+            $(".tag").on("click", function () {
+              $("#search").val($(this).text()).trigger("input"); // trigger is needed to trigger below input trigger function and add has--value class
+              $fetch.triggerAction("get_todos");
+            });
+
+            // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+            // "features": [
+            // { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
+            // { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
+            // { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
+            // { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
+            // { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
+            // { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
+            // { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
+            // { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
+            // ]
+            // }`;
 
 
-          // data.forEach((item) => {
-          //   console.log(item.link + " vs " + item.name);
-          // });
-          // const dataGeoJsonFormatted =
+            // data.forEach((item) => {
+            //   console.log(item.link + " vs " + item.name);
+            // });
+            // const dataGeoJsonFormatted =
 
-          const dataGeoJsonFormatted = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
-          `"features": [${data.map((item) => {
-            return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
-          })}]}`;
 
-          console.log("dataGeoJsonFormatted" + dataGeoJsonFormatted);
 
-          // create static geojson object to feed to MapTiler
-          // data.forEach((item) => {
-          //   console.log(item.link + " vs " + item.name);
-          // });
+            // create static geojson object to feed to MapTiler
+            // data.forEach((item) => {
+            //   console.log(item.link + " vs " + item.name);
+            // });
 
-          initMap(dataGeoJsonFormatted);
+            // initMap(data);
+            const dataGeoJsonFormatted = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
+            `"features": [${data.map((item) => {
+              return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
+            })}]}`;
 
-        } else {
-          // 200 but no results
-          console.log("We have " + data.length + " results!");
+            console.log("dataGeoJsonFormatted" + dataGeoJsonFormatted);
 
-          // show/hide
-          document.getElementById("cards").style.display = "none";
-          document.getElementById("no-results").style.display = "block";
-          document.getElementById("toolbar").style.display = "none";
-        }
+            // PUT THE DATA INTO THE MAP
+            loadCustomMarkersAndLayers(dataGeoJsonFormatted);
+
+          } else {
+            // 200 but no results
+            console.log("We have " + data.length + " results!");
+
+            // show/hide
+            document.getElementById("cards").style.display = "none";
+            document.getElementById("no-results").style.display = "block";
+            document.getElementById("toolbar").style.display = "none";
+          }
+        },
       },
+      onError: {
+        redirectUrl: null,
+        showElement: "#error",
+        hideElement: "#cards",
+        callback: async (response, data) => {
+          console.log("Error: " + response);
+          document.getElementById("btnSearch").value = document.getElementById("btnSearch").dataset.default;
+        }, // callback
+      }, // onError
     },
-    onError: {
-      redirectUrl: null,
-      showElement: "#error",
-      hideElement: "#cards",
-      callback: async (response, data) => {
-        console.log("Error: " + response);
-        document.getElementById("btnSearch").value = document.getElementById("btnSearch").dataset.default;
-      }, // callback
-    }, // onError
-  },
-});
+  });
+}; // getData
 
 // Helper to display tags
 function createTagLink(tag) {
@@ -360,8 +367,8 @@ function getUniqueIcons(data) {
 } // END: get unique icons from geodata
 
 // START : Important function that loads all markers and adds layers accordlingly
-async function loadCustomMarkersAndLayers(data) {
-  const customMarkers = getUniqueIcons(data);
+async function loadCustomMarkersAndLayers(dataGeoJsonFormatted) {
+  const customMarkers = getUniqueIcons(dataGeoJsonFormatted);
   console.log(customMarkers.length);
 
   // Load each custom marker icon using map.loadImage
@@ -376,6 +383,21 @@ async function loadCustomMarkersAndLayers(data) {
       createCheckboxesNew(marker.name);
     });
   }); // loop for each type of marker
+
+     // add a clustered GeoJSON source for a sample set of earthquakes
+     map.addSource("earthquakes", {
+      type: "geojson",
+      data: dataGeoJsonFormatted,
+      cluster: true,
+      clusterMaxZoom: 14, // Max zoom to cluster points on
+      clusterRadius: 50,
+      clusterProperties: {
+        has_restaurant: ["any", ["==", ["get", "icon"], "restaurantz"], "false"],
+        has_walk: ["any", ["==", ["get", "icon"], "walk"], "false"],
+        only_restaurant: ["all", ["==", ["get", "icon"], "restaurantz"], "false"],
+        only_walk: ["all", ["==", ["get", "icon"], "walk"], "false"],
+      },
+    });
 
   // after loop
   map.addLayer({
@@ -412,6 +434,8 @@ async function loadCustomMarkersAndLayers(data) {
       "text-color": "#ffffff",
     },
   });
+
+
 }
 // END : Important function that loads all markers and adds layers accordlingly
 
@@ -421,7 +445,8 @@ async function loadCustomMarkersAndLayers(data) {
 
 // CRUX
 
-function initMap(dataGeoJsonFormatted) {
+
+
   map.on("load", async () => {
     console.log("map on load");
 
@@ -465,26 +490,14 @@ function initMap(dataGeoJsonFormatted) {
             if (error) throw error;
 
             map.addImage("w-cluster", image);
-            loadCustomMarkersAndLayers(dataGeoJsonFormatted);
+            getData();
+
           }
         );
       });
     });
 
-    // add a clustered GeoJSON source for a sample set of earthquakes
-    map.addSource("earthquakes", {
-      type: "geojson",
-      data: dataGeoJsonFormatted,
-      cluster: true,
-      clusterMaxZoom: 14, // Max zoom to cluster points on
-      clusterRadius: 50,
-      clusterProperties: {
-        has_restaurant: ["any", ["==", ["get", "icon"], "restaurantz"], "false"],
-        has_walk: ["any", ["==", ["get", "icon"], "walk"], "false"],
-        only_restaurant: ["all", ["==", ["get", "icon"], "restaurantz"], "false"],
-        only_walk: ["all", ["==", ["get", "icon"], "walk"], "false"],
-      },
-    });
+
 
     // this adds cluster CIRCLES on map
 
@@ -619,7 +632,7 @@ function initMap(dataGeoJsonFormatted) {
     //     });
     // // end: click on legend items
   }); // map load
-}
+
 
 // When the user begins typing, hide the suggestions placeholder text
 $("#search").on("input", function () {
