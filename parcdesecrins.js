@@ -117,10 +117,10 @@ $fetch.createAction("get_todos", {
 
           const dataGeoJsonFormatted = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
           `"features": [${data.map((item) => {
-            return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": ${item.mag}, "time": ${item.time}, "felt": ${item.felt}, "tsunami": ${item.tsunami}, "icon" : "${item.icon}" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
+            return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
           })}]}`;
 
-          console.log(dataGeoJsonFormatted);
+          console.log("dataGeoJsonFormatted" + dataGeoJsonFormatted);
 
           // create static geojson object to feed to MapTiler
           // data.forEach((item) => {
