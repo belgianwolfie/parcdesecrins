@@ -474,7 +474,7 @@ async function loadCustomMarkersAndLayers(data) {
     // add a clustered GeoJSON source for a sample set of earthquakes
     map.addSource("earthquakes", {
       type: "geojson",
-      data: data,
+      data: dataGeoJsonFormatted,
       cluster: true,
       clusterMaxZoom: 14, // Max zoom to cluster points on
       clusterRadius: 50,
