@@ -1,3 +1,22 @@
+/**
+ *
+ * PARC DES ECRINS
+ * @author <THE ALLIANCE>
+ *
+ *
+ * This file is being served by jsdelivr. (see webflow)
+ * Make sure you are using the prod setup, not the uncached dev setup (see webflow Before </body> tag section)
+ *
+ * THE LOGIC
+ * =========
+ * There's a map.on("load") event at the bottom that triggers the getData() function.
+ * This function loads in a JSON from Alphi.dev API.
+ * That data is filled into the cards component with $app.components.cards.store.listings = data;
+ * Then we convert that data to GeoJson format on the fly to be used in the map
+ * Then we add it to the map with loadCustomMarkersAndLayers(dataGeoJson);
+
+ */
+
 // Defaults
 const alphiBaseUrl = "https://live.api-server.io/run/v1/66ade5323b53b139de1ea229";
 const googleBucketUrl = "https://storage.googleapis.com/parc_des_ecrins";
@@ -10,6 +29,12 @@ let searchterm = ""; // not necessary cause alphi.dev api also has default
 const initialData = {
   listings: [],
 };
+
+// GENERAL SETTINGS
+const filterGroup = document.getElementById("filter-group");
+const iconSize = 0.6;
+let filterForPointLayer = ["any"]; // Use 'any' logical operator for OR conditions
+let filterForClusterLayer = ["all", ["has", "point_count"]];
 
 // create the cards component and mount it to the html element with the id "cards"
 $app.createComponent("cards", initialData).mount("#cards");
@@ -26,6 +51,7 @@ var map = new maptilersdk.Map({
   antialias: true,
 });
 
+// Here we get the data from Alphi.dev API
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
 // This is being triggered by the x-fetch="get_todos" in <body> and then later by the "Search button"
 function getData() {
@@ -109,34 +135,17 @@ function getData() {
               $fetch.triggerAction("get_todos");
             });
 
-            // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-            // "features": [
-            // { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
-            // { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
-            // { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-            // { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
-            // { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
-            // { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
-            // { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-            // { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
-            // ]
-            // }`;
 
-            // data.forEach((item) => {
-            //   console.log(item.link + " vs " + item.name);
-            // });
-            // const dataGeoJsonFormatted =
+            // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET, but we dont need separate GeoJson for this
+            // we'll just create it on the fly from the data we got from Alphi
+            //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
+            //const dataGeo = await dataRes.json();
 
-            // create static geojson object to feed to MapTiler
-            // data.forEach((item) => {
-            //   console.log(item.link + " vs " + item.name);
-            // });
-
-            // initMap(data);
+            // Convert the data we just got from Alphi into GeoJson format for the map
             const dataGeoRaw =
               `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
               `"features": [${data.map((item) => {
-                return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
+                return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude} ] } }`;
               })}]}`;
 
             const dataGeoJson = JSON.parse(dataGeoRaw);
@@ -198,17 +207,13 @@ function createShopLink(card) {
   return "/shop-detail?id=" + card.author;
 }
 
-console.log("Are tiles loaded : " + map.areTilesLoaded());
+
 
 // start: rain layer
 // const weatherLayer = new maptilerweather.PrecipitationLayer();
 // end: rain layer
 
-// GENERAL SETTINGS
-const filterGroup = document.getElementById("filter-group");
-const iconSize = 0.6;
-let filterForPointLayer = ["any"]; // Use 'any' logical operator for OR conditions
-let filterForClusterLayer = ["all", ["has", "point_count"]];
+
 
 /////////////////////////////
 ////////////////////////////////////////
@@ -457,31 +462,8 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
 /////////////////////////////
 
 // CRUX
-
 map.on("load", async () => {
   console.log("map on load");
-
-  // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET
-  //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
-  //const data = await dataRes.json();
-
-  // BUT WE'RE GOING TO FORM A GEOJSON ON THE FLY FROM THE ALPHI DATA INSTEAD (SEE ABOVE)
-
-  // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-  //   "features": [
-  //   { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
-  //   { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
-  //   { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-  //   { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
-  //   { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
-  //   { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
-  //   { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-  //   { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
-  //   ]
-  //   }`;
-  // const data =  dataRes.json();
-
-  // const data = JSON.parse(dataGeoJsonFormatted);
 
   map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
     if (error) throw error;
@@ -565,7 +547,7 @@ map.on("load", async () => {
       .setLngLat(coordinates)
       .setHTML("magnitude: " + mag + "<br>Was there a tsunami?: " + tsunami)
       .addTo(map);
-  });
+  }); // end: on click
 
   // start :rain layer
   // map.addLayer(weatherLayer, 'Water');
@@ -615,7 +597,7 @@ map.on("load", async () => {
   //         // filterBy(month);
   //     });
   // // end: click on legend items
-}); // map load
+}); // end : map load
 
 // When the user begins typing, hide the suggestions placeholder text
 $("#search").on("input", function () {
