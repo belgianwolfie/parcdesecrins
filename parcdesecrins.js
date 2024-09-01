@@ -29,7 +29,7 @@ var map = new maptilersdk.Map({
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
 // This is being triggered by the x-fetch="get_todos" in <body> and then later by the "Search button"
 function getData() {
-  console.log("getData triggered");
+  console.log("getData triggered again safespace");
   $fetch.createAction("get_todos", {
     options: {
       method: "get",
