@@ -41,13 +41,14 @@ $app.createComponent("cards", initialData).mount("#cards");
 
 // Maptiler
 maptilersdk.config.apiKey = "fsCLuIQWGPlRskWhImQz";
+document.getElementById('map').style.visibility = 'hidden'; // hide first until data is loaded
 var map = new maptilersdk.Map({
   container: "map",
-  zoom: 11.5,
+  zoom: 10.5,
   center: [6.079625696485338, 45.05582527284327],
   style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
   //terrain: true,
-  // terrainExaggeration: 2,
+  //terrainExaggeration: 2,
   antialias: true,
 });
 
@@ -454,6 +455,8 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
     },
   });
   // end: if you want circles */
+
+  document.getElementById('map').style.visibility = 'visible'; // show map when all is loaded
 }
 // END : Important function that loads all markers and adds layers accordlingly
 
