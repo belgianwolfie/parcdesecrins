@@ -140,15 +140,16 @@ function getData() {
             // });
 
             // initMap(data);
-            const dataGeoJsonFormatted = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
+            const dataGeoRaw = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
             `"features": [${data.map((item) => {
               return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
             })}]}`;
 
+            const dataGeoJson = JSON.parse(dataGeoRaw);
 
 
             // PUT THE DATA INTO THE MAP
-            loadCustomMarkersAndLayers(dataGeoJsonFormatted);
+            loadCustomMarkersAndLayers(dataGeoJson);
 
           } else {
             // 200 but no results
@@ -345,16 +346,16 @@ function createCheckboxesNew(id) {
 // END: legend filtering
 
 // START: get unique icons from geodata
-function getUniqueIcons(dataGeoJsonFormatted) {
+function getUniqueIcons(dataGeoJson) {
   const gfxFolder = googleBucketUrl + "/map"; // Replace with the path to your "gfx" folder
 
   const uniqueIcons = new Set();
 
-  console.log("dataGeoJsonFormatted.features" + dataGeoJsonFormatted);
+  console.log("dataGeoJson.features" + dataGeoJson.features);
 
 
   // Loop through the "features" array and extract "icon" values
-  dataGeoJsonFormatted.features.forEach((feature) => {
+  dataGeoJson.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
       uniqueIcons.add(feature.properties.icon);
     }
@@ -370,8 +371,8 @@ function getUniqueIcons(dataGeoJsonFormatted) {
 } // END: get unique icons from geodata
 
 // START : Important function that loads all markers and adds layers accordlingly
-async function loadCustomMarkersAndLayers(dataGeoJsonFormatted) {
-  const customMarkers = getUniqueIcons(dataGeoJsonFormatted);
+async function loadCustomMarkersAndLayers(dataGeoJson) {
+  const customMarkers = getUniqueIcons(dataGeoJson);
   console.log(customMarkers.length);
 
   // Load each custom marker icon using map.loadImage
@@ -390,7 +391,7 @@ async function loadCustomMarkersAndLayers(dataGeoJsonFormatted) {
      // add a clustered GeoJSON source for a sample set of earthquakes
      map.addSource("earthquakes", {
       type: "geojson",
-      data: dataGeoJsonFormatted,
+      data: dataGeoJson,
       cluster: true,
       clusterMaxZoom: 14, // Max zoom to cluster points on
       clusterRadius: 50,
