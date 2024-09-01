@@ -14,24 +14,22 @@ const initialData = {
 // create the cards component and mount it to the html element with the id "cards"
 $app.createComponent("cards", initialData).mount("#cards");
 
- // Maptiler
- maptilersdk.config.apiKey = "fsCLuIQWGPlRskWhImQz";
- var map = new maptilersdk.Map({
-   container: "map",
-   zoom: 11.5,
-   center: [6.079625696485338, 45.05582527284327],
-   style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
-   //terrain: true,
-   // terrainExaggeration: 2,
-   antialias: true,
- });
-
-
-
+// Maptiler
+maptilersdk.config.apiKey = "fsCLuIQWGPlRskWhImQz";
+var map = new maptilersdk.Map({
+  container: "map",
+  zoom: 11.5,
+  center: [6.079625696485338, 45.05582527284327],
+  style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
+  //terrain: true,
+  // terrainExaggeration: 2,
+  antialias: true,
+});
 
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
 // This is being triggered by the x-fetch="get_todos" in <body> and then later by the "Search button"
 function getData() {
+  console.log("getData triggered");
   $fetch.createAction("get_todos", {
     options: {
       method: "get",
@@ -89,8 +87,6 @@ function getData() {
             console.log("We have " + data.length + " results!");
             console.log(data[0].link);
 
-
-
             // resultaat bar
             let result_text = data.length == 1 ? "result" : "results";
             let result_searchterm =
@@ -126,13 +122,10 @@ function getData() {
             // ]
             // }`;
 
-
             // data.forEach((item) => {
             //   console.log(item.link + " vs " + item.name);
             // });
             // const dataGeoJsonFormatted =
-
-
 
             // create static geojson object to feed to MapTiler
             // data.forEach((item) => {
@@ -140,17 +133,16 @@ function getData() {
             // });
 
             // initMap(data);
-            const dataGeoRaw = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
-            `"features": [${data.map((item) => {
-              return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
-            })}]}`;
+            const dataGeoRaw =
+              `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
+              `"features": [${data.map((item) => {
+                return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude}, 0.0 ] } }`;
+              })}]}`;
 
             const dataGeoJson = JSON.parse(dataGeoRaw);
 
-
             // PUT THE DATA INTO THE MAP
             loadCustomMarkersAndLayers(dataGeoJson);
-
           } else {
             // 200 but no results
             console.log("We have " + data.length + " results!");
@@ -173,7 +165,7 @@ function getData() {
       }, // onError
     },
   });
-}; // getData
+} // getData
 
 // Helper to display tags
 function createTagLink(tag) {
@@ -205,8 +197,6 @@ $("#clearsearch,#brand").on("click", function () {
 function createShopLink(card) {
   return "/shop-detail?id=" + card.author;
 }
-
-
 
 console.log("Are tiles loaded : " + map.areTilesLoaded());
 
@@ -353,7 +343,6 @@ function getUniqueIcons(dataGeoJson) {
 
   console.log("dataGeoJson.features" + dataGeoJson.features);
 
-
   // Loop through the "features" array and extract "icon" values
   dataGeoJson.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
@@ -373,7 +362,7 @@ function getUniqueIcons(dataGeoJson) {
 // START : Important function that loads all markers and adds layers accordlingly
 async function loadCustomMarkersAndLayers(dataGeoJson) {
   const customMarkers = getUniqueIcons(dataGeoJson);
-  console.log(customMarkers.length);
+  console.log("custommarkers length" + customMarkers.length);
 
   // Load each custom marker icon using map.loadImage
   customMarkers.forEach((marker) => {
@@ -381,27 +370,27 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
       if (error) throw error;
 
       // Add the loaded image as a new icon to the map
-      console.log("addimagessssss for " + marker.name);
+      console.log("added image for " + marker.name);
       map.addImage(marker.name, image);
 
       createCheckboxesNew(marker.name);
     });
   }); // loop for each type of marker
 
-     // add a clustered GeoJSON source for a sample set of earthquakes
-     map.addSource("earthquakes", {
-      type: "geojson",
-      data: dataGeoJson,
-      cluster: true,
-      clusterMaxZoom: 14, // Max zoom to cluster points on
-      clusterRadius: 50,
-      clusterProperties: {
-        has_restaurant: ["any", ["==", ["get", "icon"], "restaurantz"], "false"],
-        has_walk: ["any", ["==", ["get", "icon"], "walk"], "false"],
-        only_restaurant: ["all", ["==", ["get", "icon"], "restaurantz"], "false"],
-        only_walk: ["all", ["==", ["get", "icon"], "walk"], "false"],
-      },
-    });
+  // add a clustered GeoJSON source for a sample set of earthquakes
+  map.addSource("earthquakes", {
+    type: "geojson",
+    data: dataGeoJson,
+    cluster: true,
+    clusterMaxZoom: 14, // Max zoom to cluster points on
+    clusterRadius: 50,
+    clusterProperties: {
+      has_restaurant: ["any", ["==", ["get", "icon"], "restaurantz"], "false"],
+      has_walk: ["any", ["==", ["get", "icon"], "walk"], "false"],
+      only_restaurant: ["all", ["==", ["get", "icon"], "restaurantz"], "false"],
+      only_walk: ["all", ["==", ["get", "icon"], "walk"], "false"],
+    },
+  });
 
   // after loop
   map.addLayer({
@@ -439,8 +428,8 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
     },
   });
 
-   // /* start: if you want circles in stead of icons
-   map.addLayer({
+  // /* start: if you want circles in stead of icons
+  map.addLayer({
     id: "point-layer",
     type: "symbol",
     source: "earthquakes",
@@ -460,8 +449,6 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
     },
   });
   // end: if you want circles */
-
-
 }
 // END : Important function that loads all markers and adds layers accordlingly
 
@@ -471,174 +458,164 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
 
 // CRUX
 
+map.on("load", async () => {
+  console.log("map on load");
 
+  // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET
+  //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
+  //const data = await dataRes.json();
 
-  map.on("load", async () => {
-    console.log("map on load");
+  // BUT WE'RE GOING TO FORM A GEOJSON ON THE FLY FROM THE ALPHI DATA INSTEAD (SEE ABOVE)
 
-    // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET
-    //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
-    //const data = await dataRes.json();
+  // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  //   "features": [
+  //   { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
+  //   { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
+  //   { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
+  //   { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
+  //   { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
+  //   { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
+  //   { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
+  //   { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
+  //   ]
+  //   }`;
+  // const data =  dataRes.json();
 
-    // BUT WE'RE GOING TO FORM A GEOJSON ON THE FLY FROM THE ALPHI DATA INSTEAD (SEE ABOVE)
+  // const data = JSON.parse(dataGeoJsonFormatted);
 
-    // const dataRes = `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    //   "features": [
-    //   { "type": "restaurant", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.079625696485338, 45.05582527284327, 0.0 ] } },
-    //   { "type": "restaurant", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ 6.095941226350404, 45.04744472115766, 105.5 ] } },
-    //   { "type": "restaurant", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-    //   { "type": "restaurant", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "restaurantz"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } },
-    //   { "type": "walk", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.0772347733183345, 45.03854226167686 ] } },
-    //   { "type": "walk", "properties": { "id": "ak16994519", "mag": 1.8, "time": 1507425289659, "felt": null, "tsunami": 1 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ 6.044244294506851, 45.042627740693604 ] } },
-    //   { "type": "walk", "properties": { "id": "ak16994517", "mag": 1.6, "time": 1507424832518, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -151.3597, 63.0781, 0.0 ] } },
-    //   { "type": "walk", "properties": { "id": "ci38021336", "mag": 1.42, "time": 1507423898710, "felt": null, "tsunami": 0 , "icon" : "walk"}, "geometry": { "type": "Point", "coordinates": [ -118.497, 34.299667, 7.64 ] } }
-    //   ]
-    //   }`;
-    // const data =  dataRes.json();
+  map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
+    if (error) throw error;
 
-    // const data = JSON.parse(dataGeoJsonFormatted);
+    map.addImage("restaurant+walk", image);
 
-
-
-    map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
+    map.loadImage(googleBucketUrl + "/map/r-cluster.png", (error, image) => {
       if (error) throw error;
 
-      map.addImage("restaurant+walk", image);
+      map.addImage("r-cluster", image);
 
-      map.loadImage(googleBucketUrl + "/map/r-cluster.png", (error, image) => {
-        if (error) throw error;
+      map.loadImage(
+        googleBucketUrl + "/map/w-cluster.png", // Replace with your image URL
+        (error, image) => {
+          if (error) throw error;
 
-        map.addImage("r-cluster", image);
+          map.addImage("w-cluster", image);
+          getData();
+        }
+      );
+    });
+  });
 
-        map.loadImage(
-          googleBucketUrl + "/map/w-cluster.png", // Replace with your image URL
-          (error, image) => {
-            if (error) throw error;
+  // this adds cluster CIRCLES on map
 
-            map.addImage("w-cluster", image);
-            getData();
+  // map.addLayer({
+  //     id: 'clusters',
+  //     type: 'circle',
+  //     source: 'earthquakes',
+  //     filter: ['has', 'point_count'], // Filter for restaurants
+  //     paint: {
+  //         // Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
+  //         // with three steps to implement three types of circles:
+  //         //   * Blue, 20px circles when point count is less than 100
+  //         //   * Yellow, 30px circles when point count is between 100 and 750
+  //         //   * Pink, 40px circles when point count is greater than or equal to 750
+  //         'circle-color': [
+  //             'step',
+  //             ['get', 'point_count'],
+  //             '#51bbd6', // color when less than 100 points
+  //             100,
+  //             '#f1f075', // color between 100 and 750 points
+  //             750,
+  //             '#f28cb1' // color for more than 750 points
+  //         ],
+  //         'circle-radius': [
+  //             'step',
+  //             ['get', 'point_count'],
+  //             20, // size when less than 100 points
+  //             100,
+  //             30, // size between 100 and 750 points
+  //             750,
+  //             40 // size for more than 750 points
+  //         ]
+  //     }
+  // });
 
-          }
-        );
+  // When a click event occurs on a feature in
+  // the unclustered-point layer, open a popup at
+  // the location of the feature, with
+  // description HTML from its properties.
+  map.on("click", "point-layer", function (e) {
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    var mag = e.features[0].properties.mag;
+    var tsunami;
+
+    if (e.features[0].properties.tsunami === 1) {
+      tsunami = "yes";
+    } else {
+      tsunami = "no";
+    }
+
+    // Ensure that if the map is zoomed out such that
+    // multiple copies of the feature are visible, the
+    // popup appears over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    new maptilersdk.Popup()
+      .setLngLat(coordinates)
+      .setHTML("magnitude: " + mag + "<br>Was there a tsunami?: " + tsunami)
+      .addTo(map);
+  });
+
+  // start :rain layer
+  // map.addLayer(weatherLayer, 'Water');
+  // weatherLayer.animateByFactor(3600);
+  // end : rain layer
+
+  // inspect a cluster on click
+  map.on("click", "cluster-layer", function (e) {
+    var features = map.queryRenderedFeatures(e.point, {
+      layers: ["cluster-layer"],
+    });
+
+    var clusterId = features[0].properties.cluster_id;
+    map.getSource("earthquakes").getClusterExpansionZoom(clusterId, function (err, zoom) {
+      if (err) return;
+
+      map.easeTo({
+        center: features[0].geometry.coordinates,
+        zoom: zoom,
       });
     });
+  });
 
+  map.on("mouseenter", "cluster-layer", function () {
+    map.getCanvas().style.cursor = "pointer";
+  });
 
+  map.on("mouseleave", "cluster-layer", function () {
+    map.getCanvas().style.cursor = "";
+  });
 
-    // this adds cluster CIRCLES on map
+  const mapStyle = map.getStyle();
 
-    // map.addLayer({
-    //     id: 'clusters',
-    //     type: 'circle',
-    //     source: 'earthquakes',
-    //     filter: ['has', 'point_count'], // Filter for restaurants
-    //     paint: {
-    //         // Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
-    //         // with three steps to implement three types of circles:
-    //         //   * Blue, 20px circles when point count is less than 100
-    //         //   * Yellow, 30px circles when point count is between 100 and 750
-    //         //   * Pink, 40px circles when point count is greater than or equal to 750
-    //         'circle-color': [
-    //             'step',
-    //             ['get', 'point_count'],
-    //             '#51bbd6', // color when less than 100 points
-    //             100,
-    //             '#f1f075', // color between 100 and 750 points
-    //             750,
-    //             '#f28cb1' // color for more than 750 points
-    //         ],
-    //         'circle-radius': [
-    //             'step',
-    //             ['get', 'point_count'],
-    //             20, // size when less than 100 points
-    //             100,
-    //             30, // size between 100 and 750 points
-    //             750,
-    //             40 // size for more than 750 points
-    //         ]
-    //     }
-    // });
-
-    // When a click event occurs on a feature in
-    // the unclustered-point layer, open a popup at
-    // the location of the feature, with
-    // description HTML from its properties.
-    map.on("click", "point-layer", function (e) {
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var mag = e.features[0].properties.mag;
-      var tsunami;
-
-      if (e.features[0].properties.tsunami === 1) {
-        tsunami = "yes";
-      } else {
-        tsunami = "no";
-      }
-
-      // Ensure that if the map is zoomed out such that
-      // multiple copies of the feature are visible, the
-      // popup appears over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
-
-      new maptilersdk.Popup()
-        .setLngLat(coordinates)
-        .setHTML("magnitude: " + mag + "<br>Was there a tsunami?: " + tsunami)
-        .addTo(map);
-    });
-
-    // start :rain layer
-    // map.addLayer(weatherLayer, 'Water');
-    // weatherLayer.animateByFactor(3600);
-    // end : rain layer
-
-
-
-    // inspect a cluster on click
-    map.on("click", "cluster-layer", function (e) {
-      var features = map.queryRenderedFeatures(e.point, {
-        layers: ["cluster-layer"],
-      });
-
-      var clusterId = features[0].properties.cluster_id;
-      map.getSource("earthquakes").getClusterExpansionZoom(clusterId, function (err, zoom) {
-        if (err) return;
-
-        map.easeTo({
-          center: features[0].geometry.coordinates,
-          zoom: zoom,
-        });
-      });
-    });
-
-    map.on("mouseenter", "cluster-layer", function () {
-      map.getCanvas().style.cursor = "pointer";
-    });
-
-    map.on("mouseleave", "cluster-layer", function () {
-      map.getCanvas().style.cursor = "";
-    });
-
-    const mapStyle = map.getStyle();
-
-    // // start: click on legend items
-    // document
-    //     .getElementById('kaka')
-    //     .addEventListener('change', function (e) {
-    //         if (e.target.checked) {
-    //             console.log("Checkbox is checked..");
-    //             filterBy("restaurants_on");
-    //         } else {
-    //             console.log("Checkbox is not checked..");
-    //             filterBy("restaurants_off");
-    //         }
-    //         console.log("changed " + parseInt(e.target.value))
-    //         // var month = parseInt(e.target.value, 10);
-    //         // filterBy(month);
-    //     });
-    // // end: click on legend items
-  }); // map load
-
+  // // start: click on legend items
+  // document
+  //     .getElementById('kaka')
+  //     .addEventListener('change', function (e) {
+  //         if (e.target.checked) {
+  //             console.log("Checkbox is checked..");
+  //             filterBy("restaurants_on");
+  //         } else {
+  //             console.log("Checkbox is not checked..");
+  //             filterBy("restaurants_off");
+  //         }
+  //         console.log("changed " + parseInt(e.target.value))
+  //         // var month = parseInt(e.target.value, 10);
+  //         // filterBy(month);
+  //     });
+  // // end: click on legend items
+}); // map load
 
 // When the user begins typing, hide the suggestions placeholder text
 $("#search").on("input", function () {
