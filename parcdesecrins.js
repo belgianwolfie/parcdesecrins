@@ -52,7 +52,9 @@ var map = new maptilersdk.Map({
   //terrainExaggeration: 2,
   antialias: true,
   navigationControl: false //disable the navigation control
-});
+}).addControl(new maptilersdk.navigationControl({
+  showCompass: false
+}));
 
 // Here we get the data from Alphi.dev API
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
