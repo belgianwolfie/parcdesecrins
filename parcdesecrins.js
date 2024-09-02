@@ -48,6 +48,8 @@ var map = new maptilersdk.Map({
   center: [6.079625696485338, 45.05582527284327],
   showCompass: false,
   terrainControl: false,
+  navigationControl: false,
+  showZoom:true,
   geolocateControl: false,
   fullscreenControl: "top-left",
   style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
