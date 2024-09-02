@@ -55,7 +55,7 @@ var map = new maptilersdk.Map({
 });
 
 // Add zoom and rotation controls to the map.
-map.addControl(new mapboxgl.NavigationControl({
+map.addControl(new maptilersdk.NavigationControl({
   // Hide rotation control.
   showCompass: false
 
