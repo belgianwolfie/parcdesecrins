@@ -47,7 +47,6 @@ var map = new maptilersdk.Map({
   zoom: 10.5,
   center: [6.079625696485338, 45.05582527284327],
   fullscreenControl: "top-left",
-  attributionControl: true,
   style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
   //terrain: true,
   //terrainExaggeration: 2,
