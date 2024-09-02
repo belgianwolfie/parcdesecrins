@@ -52,7 +52,7 @@ var map = new maptilersdk.Map({
   //terrainExaggeration: 2,
   antialias: true,
   navigationControl: false //disable the navigation control
-}).addControl(new maptilersdk.navigationControl({
+}).addControl(new maptilersdk.MaptilerNavigationControl({
   showCompass: false
 }));
 
