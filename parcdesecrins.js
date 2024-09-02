@@ -47,19 +47,18 @@ var map = new maptilersdk.Map({
   zoom: 10.5,
   center: [6.079625696485338, 45.05582527284327],
   fullscreenControl: "top-left",
-
+  attributionControl: true,
   style: "b80bd75b-379c-45e4-9006-643ba8aa190e", // plastic map : "802d2114-c629-44f6-b50f-987a6253af56",
   //terrain: true,
   //terrainExaggeration: 2,
   antialias: true,
-});
-
-// Add zoom and rotation controls to the map.
-map.addControl(new maptilersdk.MaptilerNavigationControl({
+}).addControl(new maptilersdk.MaptilerNavigationControl({
   // Hide rotation control.
   showCompass: false
 
-}), 'top-right');
+}), 'top-right').addControl(new maptilersdk.AttributionControl({
+  compact: true
+}));
 
 // Here we get the data from Alphi.dev API
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
