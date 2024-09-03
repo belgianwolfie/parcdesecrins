@@ -217,7 +217,7 @@ $("#clearsearch,#brand").on("click", function () {
 });
 
 // when clicking on HIDE LIST icon on map
-document.querySelector('.hide-list').addEventListener('click', function() {
+document.querySelector('.list-toggle').addEventListener('click', function() {
   document.querySelector('.uui-cta06_component').classList.toggle('expanded');
 });
 
