@@ -55,6 +55,14 @@ var map = new maptilersdk.Map({
 }).addControl(new maptilersdk.MaptilerNavigationControl({
   showCompass: false
 }));
+// disable map rotation using right click + drag
+map.dragRotate.disable();
+
+// disable map rotation using keyboard
+map.keyboard.disable();
+
+// disable map rotation using touch rotation gesture
+map.touchZoomRotate.disableRotation();
 
 // Here we get the data from Alphi.dev API
 // this is using https://shinyobjectlabs.gitbook.io/fetch-js/
