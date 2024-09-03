@@ -219,6 +219,9 @@ $("#clearsearch,#brand").on("click", function () {
 // when clicking on HIDE LIST icon on map
 document.querySelector('.list-toggle').addEventListener('click', function() {
   document.querySelector('.uui-cta06_component').classList.toggle('expanded');
+
+   // Toggle the active class for the button
+   this.classList.toggle('active');
 });
 
 function createShopLink(card) {
