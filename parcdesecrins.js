@@ -390,6 +390,12 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
   const customMarkers = getUniqueIcons(dataGeoJson);
   console.log("custommarkers length" + customMarkers.length);
 
+  // clear all layers and sources first (if search and not initial load)
+  if (map.getLayer('cluster-layer')) map.removeLayer('cluster-layer');
+  if (map.getLayer('point-layer')) map.removeLayer('point-layer');
+  if (map.getSource('earthquakes')) map.removeSource('earthquakes');
+
+
   // Load each custom marker icon using map.loadImage
   customMarkers.forEach((marker) => {
     map.loadImage(marker.path, function (error, image) {
