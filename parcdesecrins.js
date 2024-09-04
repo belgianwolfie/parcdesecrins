@@ -393,6 +393,8 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
   // clear all layers and sources first (if search and not initial load)
   if (map.getLayer('cluster-layer')) map.removeLayer('cluster-layer');
   if (map.getLayer('point-layer')) map.removeLayer('point-layer');
+  if (map.getLayer('cluster-count')) map.removeLayer('cluster-count');
+  if (map.getLayer('unclustered-point')) map.removeLayer('unclustered-point');
   if (map.getSource('earthquakes')) map.removeSource('earthquakes');
 
 
