@@ -496,37 +496,37 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
 map.on("load", async () => {
   console.log("map on load");
 
-  const rw = await map.loadImage(googleBucketUrl + '/map/restaurant+walk.png');
-  map.addImage('restaurant+walk', rw);
+  // const rw = await map.loadImage(googleBucketUrl + '/map/restaurant+walk.png');
+  // map.addImage('restaurant+walk', rw);
 
-  const rc = await map.loadImage(googleBucketUrl + '/map/r-cluster.png');
-  map.addImage('r-cluster', rc);
+  // const rc = await map.loadImage(googleBucketUrl + '/map/r-cluster.png');
+  // map.addImage('r-cluster', rc);
 
-  const wc = await map.loadImage(googleBucketUrl + '/map/w-cluster.png');
-  map.addImage('w-cluster', wc);
-  getData();
+  // const wc = await map.loadImage(googleBucketUrl + '/map/w-cluster.png');
+  // map.addImage('w-cluster', wc);
+  // getData();
 
-  // map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
-  //   if (error) throw error;
+  map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
+    if (error) throw error;
 
-  //   map.addImage("restaurant+walk", image);
+    map.addImage("restaurant+walk", image);
 
-  //   map.loadImage(googleBucketUrl + "/map/r-cluster.png", (error, image) => {
-  //     if (error) throw error;
+    map.loadImage(googleBucketUrl + "/map/r-cluster.png", (error, image) => {
+      if (error) throw error;
 
-  //     map.addImage("r-cluster", image);
+      map.addImage("r-cluster", image);
 
-  //     map.loadImage(
-  //       googleBucketUrl + "/map/w-cluster.png", // Replace with your image URL
-  //       (error, image) => {
-  //         if (error) throw error;
+      map.loadImage(
+        googleBucketUrl + "/map/w-cluster.png", // Replace with your image URL
+        (error, image) => {
+          if (error) throw error;
 
-  //         map.addImage("w-cluster", image);
-  //         getData();
-  //       }
-  //     );
-  //   });
-  // });
+          map.addImage("w-cluster", image);
+          getData();
+        }
+      );
+    });
+  });
 
   // this adds cluster CIRCLES on map
 
