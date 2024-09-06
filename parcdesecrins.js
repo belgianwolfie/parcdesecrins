@@ -500,10 +500,10 @@ map.on("load", async () => {
   map.addImage('restaurant+walk', rw);
 
   const rc = await map.loadImage(googleBucketUrl + '/map/r-cluster.png');
-  map.addImage('r-cluster', rc.data);
+  map.addImage('r-cluster', rc);
 
   const wc = await map.loadImage(googleBucketUrl + '/map/w-cluster.png');
-  map.addImage('w-cluster', wc.data);
+  map.addImage('w-cluster', wc);
   getData();
 
   // map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
