@@ -621,6 +621,9 @@ map.on('load', async () => {
     map.getCanvas().style.cursor = "";
   });
 
+  //map.on('render', createListFromSource); // this in case  you want to load map first and then list (im doing different)
+  map.on('moveend', showRefreshListButton);
+
   const mapStyle = map.getStyle();
 
   // // start: click on legend items
@@ -659,6 +662,11 @@ $("#clearsearch,#brand").on("click", function () {
 function createShopLink(card) {
   return "/shop-detail?id=" + card.author;
 }
+
+function showRefreshListButton() {
+  document.querySelector('.reload').classList.remove('hidden');
+}
+
 
 /*window.addEventListener('resize', function(event) {
     //make sure searchbox stickies when intro scales responsiveness
