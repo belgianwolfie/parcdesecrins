@@ -224,9 +224,7 @@ document.querySelector('.list-toggle').addEventListener('click', function() {
    this.classList.toggle('active');
 });
 
-function createShopLink(card) {
-  return "/shop-detail?id=" + card.author;
-}
+
 
 
 
@@ -660,6 +658,7 @@ $("#clearsearch,#brand").on("click", function () {
 });
 
 function createShopLink(card) {
+  console.log("hier zit iet");
   return "/shop-detail?id=" + card.author;
 }
 
