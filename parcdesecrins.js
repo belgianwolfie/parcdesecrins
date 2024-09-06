@@ -497,13 +497,13 @@ map.on('load', async function() {
   console.log("map on load");
 
   const rw = await map.loadImage(googleBucketUrl + '/map/restaurant+walk.png');
-  map.addImage('restaurant+walk', rw);
+  map.addImage('restaurant+walk', rw.data);
 
   const rc = await map.loadImage(googleBucketUrl + '/map/r-cluster.png');
-  map.addImage('r-cluster', rc);
+  map.addImage('r-cluster', rc.data);
 
   const wc = await map.loadImage(googleBucketUrl + '/map/w-cluster.png');
-  map.addImage('w-cluster', wc);
+  map.addImage('w-cluster', wc.data);
   getData();
 
   // map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
