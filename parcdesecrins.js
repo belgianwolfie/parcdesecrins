@@ -497,7 +497,7 @@ map.on("load", async () => {
   console.log("map on load");
 
   const rw = await map.loadImage(googleBucketUrl + '/map/restaurant+walk.png');
-  map.addImage('restaurant+walk', rw.data);
+  map.addImage('restaurant+walk', rw);
 
   const rc = await map.loadImage(googleBucketUrl + '/map/r-cluster.png');
   map.addImage('r-cluster', rc.data);
