@@ -612,11 +612,12 @@ map.on('load', async () => {
     });
   });
 
-  map.on("mouseenter", "cluster-layer", function () {
+  /// When the mouse is over the markers, update the cursor
+  map.on("mouseenter", "point-layer", function () {
     map.getCanvas().style.cursor = "pointer";
   });
 
-  map.on("mouseleave", "cluster-layer", function () {
+  map.on("mouseleave", "point-layer", function () {
     map.getCanvas().style.cursor = "";
   });
 
