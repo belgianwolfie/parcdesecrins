@@ -704,37 +704,16 @@ function activateList(data) {
 
 // function to communicate from list to map
 function selectListToMap(item) {
-  const haha = map.getLayoutProperty('point-layer', 'icon-image',
-    [
-      'match',
-      ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-      item.dataset.id, 'restaurant+walk-active', //image when id is the clicked feature id
-      'restaurant+walk-active' // default
-    ]
-  );
-  console.log("parseInt(item.dataset.lonlat)]" + item.dataset.lonlat);
-  console.log("parseInt(item.dataset.id)]" + item.dataset.id);
-  console.log("haha" + haha);
-  // change the icon of the selected item to the active version
-  // map.addLayer({
-  //   id: "point-layer",
-  //   type: "symbol",
-  //   source: "earthquakes",
-  //   filter: ["!", ["has", "point_count"]],
-  //   layout: {
-  //     "icon-image": [
-  //       "case",
-  //       ["==", ["get", "icon"], "restaurantz"],
-  //       "restaurantz",
-  //       ["==", ["get", "icon"], "walk"],
-  //       "walk",
-  //       "walk", // default cause 'case'
-  //     ],
-  //     "icon-size": iconSize,
-  //     "icon-allow-overlap": true,
-  //     "icon-ignore-placement": true, // icon will not push away underlaying village names.
-  //   },
-  // });
+  // const haha = map.getLayoutProperty('point-layer', 'icon-image',
+  //   [
+  //     'match',
+  //     ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+  //     item.dataset.id, 'restaurant+walk-active', //image when id is the clicked feature id
+  //     'restaurant+walk-active' // default
+  //   ]
+  // );
+
+
   map.setLayoutProperty('point-layer', 'icon-image',[
       'case',
       ['==', ['get', 'id'], item.dataset.id], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
