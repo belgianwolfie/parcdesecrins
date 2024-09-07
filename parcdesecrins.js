@@ -568,7 +568,7 @@ map.on("load", async () => {
 
     if (features.length) {
       const element = features[0];
-      console.log("elelelele"+ element.properties.id);
+
       var coordinates = features[0].geometry.coordinates.slice();
       var mag = features[0].properties.mag;
       var tsunami;
@@ -729,8 +729,8 @@ function selectListToMap(item) {
 // function to communicate from MAP to LIST
 function selectMapToList(element) {
   cleanListSelection();
-  console.log("selected " + element.id);
-  const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.id}"]`);
+
+  const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.properties.id}"]`);
   listSelected.classList.add('selected');
   listSelected.scrollIntoView({behavior: 'smooth', block: 'nearest'});
 }
