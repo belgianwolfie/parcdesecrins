@@ -728,6 +728,7 @@ function selectListToMap(item) {
 // function to communicate from MAP to LIST
 function selectMapToList(element) {
   cleanListSelection();
+  console.log("selected " + element);
   const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.id}"]`);
   listSelected.classList.add('selected');
   listSelected.scrollIntoView({behavior: 'smooth', block: 'nearest'});
