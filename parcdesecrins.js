@@ -739,7 +739,7 @@ function selectMapToList(element) {
 function cleanSelection() {
   //selectedItem = null;
   //map.setLayoutProperty('points', 'icon-image', 'pinShoe');
-  //cleanListSelection();
+  cleanListSelection();
 }
 
 function cleanListSelection() {
