@@ -678,7 +678,7 @@ function activateList(data) {
   });
 
   let listContainer = document.querySelector(".uui-blogsection01_list");
-  const listItems = listContainer.querySelectorAll(".uui-blogsection01_item");
+  const listItems = listContainer.querySelectorAll(".uui-blogsection01_item:not(:first-child)"); // first one is a dummy item, so we skip it
   listItems.forEach((div, index) => {
     if (items[index]) {
       console.log("index " + index);
