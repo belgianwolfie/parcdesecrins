@@ -734,14 +734,14 @@ function selectMapToList(element) {
   listSelected.classList.add('selected');
   listSelected.scrollIntoView({behavior: 'smooth', block: 'center'});
   // Adjust the scroll position with an offset after a delay
-  // setTimeout(() => {
-  //   const offset = 1;  // Adjust this value for your desired offset
-  //   window.scrollBy({
-  //     top: -offset,  // Scroll up (negative value for offset)
-  //     left: 0,
-  //     behavior: 'smooth'
-  //   });
-  // }, 300);  // The delay ensures scrollIntoView finishes first
+  setTimeout(() => {
+    const offset = 10;  // Adjust this value for your desired offset
+    window.scrollBy({
+      top: offset,  // Scroll up (negative value for offset)
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, 300);  // The delay ensures scrollIntoView finishes first
 }
 
 function cleanSelection() {
