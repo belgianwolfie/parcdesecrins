@@ -669,7 +669,21 @@ function cardLoaded(card) {
   return "#card-" + card.id;
 }
 
+function activateListItems() {
+  // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
+  let listContainer = document.querySelector('.uui-blogsection01_list');
 
+  listContainer.addEventListener('click', (e) => {
+    //cleanSelection();
+    const li = e.target.closest('.uui-blogsection01_item');
+    li.classList.toggle('selected');
+    if (li.classList.contains('selected')) {
+      selectedItem = parseInt(li.querySelector('a'));
+      //selectListToMap(li);
+      console.log("selectedItem: " + selectedItem);
+    }
+  });
+}
 
 function showRefreshListButton() {
   document.querySelector('.reload').classList.remove('hidden');
