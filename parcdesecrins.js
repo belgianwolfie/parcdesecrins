@@ -681,6 +681,7 @@ function activateList(data) {
   const listItems = listContainer.querySelectorAll(".uui-blogsection01_item");
   listItems.forEach((div, index) => {
     if (items[index]) {
+      console.log("index " + index);
       div.setAttribute("data-id", items[index].i);
       div.setAttribute("data-lonlat", items[index].lon + "," + items[index].lat);
     }
@@ -707,7 +708,7 @@ function selectListToMap(item) {
   //     'pinShoe' // default
   //   ]
   // );
-  //map.setCenter(item.dataset.lonlat.split(','));
+
   map.flyTo({
     center: item.dataset.lonlat.split(',')
   });
