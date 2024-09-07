@@ -708,7 +708,7 @@ function selectListToMap(item) {
     [
       'match',
       ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-      parseInt(item.dataset.id), 'restaurant+walk-active', //image when id is the clicked feature id
+      item.dataset.id, 'restaurant+walk-active', //image when id is the clicked feature id
       'restaurant+walk-active' // default
     ]
   );
@@ -737,7 +737,7 @@ function selectListToMap(item) {
   // });
   map.setLayoutProperty('point-layer', 'icon-image',[
       'case',
-      ['==', ['get', 'id'], parseInt(item.dataset.id)], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+      ['==', ['get', 'id'], item.dataset.id], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
       'restaurant+walk-active', //image when id is the clicked feature id
       ['get', 'icon'] // default
     ]
