@@ -665,7 +665,7 @@ function createShopLink(card) {
 
 // abusing the x-show  (see webflow on the card) functionality from framework.js to inject an id into the card
 function cardLoaded(id) {
-  console.log("card loaded" + card.id);
+  //console.log("card loaded" + card.id);
   return "#card-" + id;
 }
 
