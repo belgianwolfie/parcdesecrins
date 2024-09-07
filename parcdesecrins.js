@@ -568,6 +568,7 @@ map.on("load", async () => {
 
     if (features.length) {
       const element = features[0];
+      console.log("elelelele"+ element);
       var coordinates = features[0].geometry.coordinates.slice();
       var mag = features[0].properties.mag;
       var tsunami;
