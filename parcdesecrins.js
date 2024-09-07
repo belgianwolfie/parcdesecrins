@@ -676,7 +676,9 @@ function cardLoaded(card) {
 function activateList(data) {
   // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
 console.log(data);
+const ids = data.map(item => item.id);
 
+console.log(ids);
   let listContainer = document.querySelector('.uui-blogsection01_list');
 
   listContainer.addEventListener('click', (e) => {
