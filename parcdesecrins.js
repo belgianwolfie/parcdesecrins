@@ -735,7 +735,7 @@ function selectMapToList(element) {
   listSelected.scrollIntoView({behavior: 'smooth', block: 'center'});
   // Adjust the scroll position with an offset after a delay
   setTimeout(() => {
-    const offset = 10;  // Adjust this value for your desired offset
+    const offset = 100;  // Adjust this value for your desired offset
     window.scrollBy({
       top: offset,  // Scroll up (negative value for offset)
       left: 0,
