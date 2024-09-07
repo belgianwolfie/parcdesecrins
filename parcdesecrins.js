@@ -707,7 +707,10 @@ function selectListToMap(item) {
   //     'pinShoe' // default
   //   ]
   // );
-  map.setCenter(item.dataset.lonlat.split(','));
+  //map.setCenter(item.dataset.lonlat.split(','));
+  map.flyTo({
+    center: item.dataset.lonlat.split(',')
+  });
 }
 
 
