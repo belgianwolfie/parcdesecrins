@@ -663,8 +663,8 @@ function createShopLink(card) {
 }
 
 
-function cardsMounted() {
-  console.log("cards mounted");
+function cardLoaded(card) {
+  console.log("card loaded");
 
 }
 
