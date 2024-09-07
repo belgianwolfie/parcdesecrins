@@ -676,10 +676,24 @@ function cardLoaded(card) {
 function activateList(data) {
   // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
 console.log(data);
-const ids = data.map(item => item.id);
+const items = data.map(item => {
+  return {
+    i: item.id,
+    lat: item.latitude,
+    lon: item.longitude,
+  };
+});
+console.log(items);
 
 console.log(ids);
   let listContainer = document.querySelector('.uui-blogsection01_list');
+  const listItems = listContainer.querySelectorAll('.uui-blogsection01_item');
+  listItems.forEach((div, index) => {
+    if (items[index]) {
+      div.setAttribute("data-id", ids[index].i);
+      div.setAttribute("data-latlong", items[index].);
+    }
+  });
 
   listContainer.addEventListener('click', (e) => {
     //cleanSelection();
