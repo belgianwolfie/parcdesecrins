@@ -564,27 +564,35 @@ map.on("load", async () => {
   // the location of the feature, with
   // description HTML from its properties.
   map.on("click", "point-layer", function (e) {
-    var coordinates = e.features[0].geometry.coordinates.slice();
-    var mag = e.features[0].properties.mag;
-    var tsunami;
+    const features = getRenderedFeatures(e.point);
 
-    if (e.features[0].properties.tsunami === 1) {
-      tsunami = "yes";
-    } else {
-      tsunami = "no";
+    if (features.length) {
+      const element = features[0];
+      var coordinates = features[0].geometry.coordinates.slice();
+      var mag = features[0].properties.mag;
+      var tsunami;
+
+      if (features[0].properties.tsunami === 1) {
+        tsunami = "yes";
+      } else {
+        tsunami = "no";
+      }
+
+      // Ensure that if the map is zoomed out such that
+      // multiple copies of the feature are visible, the
+      // popup appears over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      new maptilersdk.Popup()
+        .setLngLat(coordinates)
+        .setHTML("magnitude: " + mag + "<br>Was there a tsunami?: " + tsunami)
+        .addTo(map);
+
+      // Scroll to the item in the list belonging to this marker
+      selectMapToList(element);
     }
-
-    // Ensure that if the map is zoomed out such that
-    // multiple copies of the feature are visible, the
-    // popup appears over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-
-    new maptilersdk.Popup()
-      .setLngLat(coordinates)
-      .setHTML("magnitude: " + mag + "<br>Was there a tsunami?: " + tsunami)
-      .addTo(map);
   }); // end: on click
 
   // start :rain layer
@@ -702,19 +710,9 @@ function activateList(data) {
   });
 }
 
-// function to communicate from list to map
+// function to communicate from LIST to MAP
 function selectListToMap(item) {
-  // const haha = map.getLayoutProperty('point-layer', 'icon-image',
-  //   [
-  //     'match',
-  //     ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-  //     item.dataset.id, 'restaurant+walk-active', //image when id is the clicked feature id
-  //     'restaurant+walk-active' // default
-  //   ]
-  // );
-
-
-  map.setLayoutProperty('point-layer', 'icon-image',[
+ map.setLayoutProperty('point-layer', 'icon-image',[
       'case',
       ['==', ['get', 'id'], item.dataset.id], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
       'restaurant+walk-active', //image when id is the clicked feature id
@@ -727,10 +725,18 @@ function selectListToMap(item) {
   });
 }
 
+// function to communicate from MAP to LIST
+function selectMapToList(element) {
+  cleanListSelection();
+  const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.id}"]`);
+  listSelected.classList.add('selected');
+  listSelected.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+
 function cleanSelection() {
   //selectedItem = null;
   //map.setLayoutProperty('points', 'icon-image', 'pinShoe');
-  cleanListSelection();
+  //cleanListSelection();
 }
 
 function cleanListSelection() {
