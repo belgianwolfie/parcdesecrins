@@ -136,6 +136,7 @@ function getData() {
 
             // PUT THE DATA INTO THE CARDS
             $app.components.cards.store.listings = data;
+            activateList(); // make cards clickable
 
             // show/hide
             document.getElementById("no-results").style.display = "none";
@@ -147,6 +148,8 @@ function getData() {
               $("#search").val($(this).text()).trigger("input"); // trigger is needed to trigger below input trigger function and add has--value class
               $fetch.triggerAction("get_todos");
             });
+
+
 
 
             // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET, but we dont need separate GeoJson for this
@@ -669,7 +672,7 @@ function cardLoaded(card) {
   return "#card-" + card.id;
 }
 
-function activateListItems() {
+function activateList() {
   // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
   let listContainer = document.querySelector('.uui-blogsection01_list');
 
