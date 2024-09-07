@@ -136,9 +136,9 @@ function getData() {
 
             // PUT THE DATA INTO THE CARDS
             $app.components.cards.store.listings = data;
-            activateList(); // make cards clickable
+            activateList(data); // make cards clickable
 
-            // show/hide
+            // show/hide when all is ready for clicks
             document.getElementById("no-results").style.display = "none";
             document.getElementById("cards").style.display = "block";
             document.getElementById("toolbar").style.display = "block";
@@ -673,8 +673,10 @@ function cardLoaded(card) {
   return "#card-" + card.id;
 }
 
-function activateList() {
+function activateList(data) {
   // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
+console.log(data);
+
   let listContainer = document.querySelector('.uui-blogsection01_list');
 
   listContainer.addEventListener('click', (e) => {
