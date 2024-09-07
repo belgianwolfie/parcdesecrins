@@ -696,23 +696,23 @@ function activateList(data) {
     const li = e.target.closest(".uui-blogsection01_item");
     li.classList.toggle("selected");
     if (li.classList.contains("selected")) {
-      //selectedItem = li.querySelector("a").split("#")[1];
-      selectListToMap(li);
+      selectedItem = parseInt(li.dataset.id);
+      selectListToMap(selectItem);
     }
   });
 }
 
 // function to communicate from list to map
-function selectListToMap(item) {
+function selectListToMap(itemId) {
   const haha = map.getLayoutProperty('point-layer', 'icon-image',
     [
       'match',
       ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-      parseInt(item.dataset.id), 'restaurant+walk-active', //image when id is the clicked feature id
+      parseInt(itemId), 'restaurant+walk-active', //image when id is the clicked feature id
       'restaurant+walk-active' // default
     ]
   );
-  console.log("parseInt(item.dataset.id)]" + item);
+  console.log("parseInt(item.dataset.id)]" + itemId);
   console.log("haha" + haha);
   // change the icon of the selected item to the active version
   // map.addLayer({
@@ -736,7 +736,7 @@ function selectListToMap(item) {
   // });
   map.setLayoutProperty('point-layer', 'icon-image', [
       'case',
-      ['==', ['get', 'id'], parseInt(item.dataset.id)], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+      ['==', ['get', 'id'], parseInt(itemId)], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
       'restaurant+walk-active', //image when id is the clicked feature id
       ['get', 'icon'] // default icon
     ]
