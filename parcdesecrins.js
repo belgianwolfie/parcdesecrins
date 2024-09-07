@@ -690,8 +690,8 @@ console.log(ids);
   const listItems = listContainer.querySelectorAll('.uui-blogsection01_item');
   listItems.forEach((div, index) => {
     if (items[index]) {
-      div.setAttribute("data-id", ids[index].i);
-      div.setAttribute("data-latlong", items[index].);
+      div.setAttribute("data-id", items[index].i);
+      div.setAttribute("data-latlong", items[index].lat + "," + items[index].lon);
     }
   });
 
