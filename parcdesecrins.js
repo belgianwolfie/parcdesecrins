@@ -753,7 +753,7 @@ function showRefreshListButton() {
 function getRenderedFeatures(point) {
   //if the point is null, it is searched within the bounding box of the map view
   const features = map.queryRenderedFeatures(point, {
-    layers: ['points']
+    layers: ['point-layer']
   });
   return features;
 }
