@@ -41,7 +41,7 @@ $app.createComponent("cards", initialData).mount("#cards");
 
 // Maptiler
 maptilersdk.config.apiKey = "fsCLuIQWGPlRskWhImQz";
-document.getElementById('map').style.visibility = 'hidden'; // hide first until data is loaded
+document.getElementById("map").style.visibility = "hidden"; // hide first until data is loaded
 var map = new maptilersdk.Map({
   container: "map",
   zoom: 10.5,
@@ -51,10 +51,12 @@ var map = new maptilersdk.Map({
   //terrain: true,
   //terrainExaggeration: 2,
   antialias: true,
-  navigationControl: false //disable the navigation control
-}).addControl(new maptilersdk.MaptilerNavigationControl({
-  showCompass: false
-}));
+  navigationControl: false, //disable the navigation control
+}).addControl(
+  new maptilersdk.MaptilerNavigationControl({
+    showCompass: false,
+  })
+);
 // disable map rotation using right click + drag
 map.dragRotate.disable();
 
@@ -149,9 +151,6 @@ function getData() {
               $fetch.triggerAction("get_todos");
             });
 
-
-
-
             // THIS WORKS IF YOU HAVE THE GEOJSON ON GOOGLE BUCKET, but we dont need separate GeoJson for this
             // we'll just create it on the fly from the data we got from Alphi
             //const dataRes = await fetch(googleBucketUrl + '/map/data.geojson');
@@ -220,22 +219,16 @@ $("#clearsearch,#brand").on("click", function () {
 });
 
 // when clicking on HIDE LIST icon on map
-document.querySelector('.list-toggle').addEventListener('click', function() {
-  document.querySelector('.uui-cta06_component').classList.toggle('expanded');
+document.querySelector(".list-toggle").addEventListener("click", function () {
+  document.querySelector(".uui-cta06_component").classList.toggle("expanded");
 
-   // Toggle the active class for the button
-   this.classList.toggle('active');
+  // Toggle the active class for the button
+  this.classList.toggle("active");
 });
-
-
-
-
 
 // start: rain layer
 // const weatherLayer = new maptilerweather.PrecipitationLayer();
 // end: rain layer
-
-
 
 /////////////////////////////
 ////////////////////////////////////////
@@ -392,12 +385,11 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
   console.log("custommarkers length" + customMarkers.length);
 
   // clear all layers and sources first (if search and not initial load)
-  if (map.getLayer('cluster-layer')) map.removeLayer('cluster-layer');
-  if (map.getLayer('point-layer')) map.removeLayer('point-layer');
-  if (map.getLayer('cluster-count')) map.removeLayer('cluster-count');
-  if (map.getLayer('unclustered-point')) map.removeLayer('unclustered-point');
-  if (map.getSource('earthquakes')) map.removeSource('earthquakes');
-
+  if (map.getLayer("cluster-layer")) map.removeLayer("cluster-layer");
+  if (map.getLayer("point-layer")) map.removeLayer("point-layer");
+  if (map.getLayer("cluster-count")) map.removeLayer("cluster-count");
+  if (map.getLayer("unclustered-point")) map.removeLayer("unclustered-point");
+  if (map.getSource("earthquakes")) map.removeSource("earthquakes");
 
   // Load each custom marker icon using map.loadImage
   customMarkers.forEach((marker) => {
@@ -485,7 +477,7 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
   });
   // end: if you want circles */
 
-  document.getElementById('map').style.visibility = 'visible'; // show map when all is loaded
+  document.getElementById("map").style.visibility = "visible"; // show map when all is loaded
 }
 // END : Important function that loads all markers and adds layers accordlingly
 
@@ -494,7 +486,7 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
 /////////////////////////////
 
 // CRUX
-map.on('load', async () => {
+map.on("load", async () => {
   console.log("map on load");
 
   // const rw = await map.loadImage(googleBucketUrl + '/map/restaurant+walk.png');
@@ -623,7 +615,7 @@ map.on('load', async () => {
   });
 
   //map.on('render', createListFromSource); // this in case  you want to load map first and then list (im doing different)
-  map.on('moveend', showRefreshListButton);
+  map.on("moveend", showRefreshListButton);
 
   const mapStyle = map.getStyle();
 
@@ -665,7 +657,6 @@ function createShopLink(card) {
   return "/shop-detail?id=" + card.author;
 }
 
-
 // abusing the x-show  (see webflow on the card) functionality from framework.js to inject an id into the card
 function cardLoaded(card) {
   //console.log("card loaded" + card.id);
@@ -673,21 +664,21 @@ function cardLoaded(card) {
   return "#card-" + card.id;
 }
 
+// inject id's and latlongs into list items and catch clicks (could be cleaner I guess, but framework.js doesnt allow data attributes to be filled
+// on the webflow side
 function activateList(data) {
   // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
-console.log(data);
-const items = data.map(item => {
-  return {
-    i: item.id,
-    lat: item.latitude,
-    lon: item.longitude,
-  };
-});
-console.log(items);
+  console.log(data);
+  const items = data.map((item) => {
+    return {
+      i: item.id,
+      lat: item.latitude,
+      lon: item.longitude,
+    };
+  });
 
-
-  let listContainer = document.querySelector('.uui-blogsection01_list');
-  const listItems = listContainer.querySelectorAll('.uui-blogsection01_item');
+  let listContainer = document.querySelector(".uui-blogsection01_list");
+  const listItems = listContainer.querySelectorAll(".uui-blogsection01_item");
   listItems.forEach((div, index) => {
     if (items[index]) {
       div.setAttribute("data-id", items[index].i);
@@ -695,22 +686,34 @@ console.log(items);
     }
   });
 
-  listContainer.addEventListener('click', (e) => {
+  listContainer.addEventListener("click", (e) => {
     //cleanSelection();
-    const li = e.target.closest('.uui-blogsection01_item');
-    li.classList.toggle('selected');
-    if (li.classList.contains('selected')) {
-      selectedItem = li.querySelector('a').split('#')[1];
-      //selectListToMap(li);
-      console.log("selectedItem: " + selectedItem.href.split('#')[1]);
+    const li = e.target.closest(".uui-blogsection01_item");
+    li.classList.toggle("selected");
+    if (li.classList.contains("selected")) {
+      //selectedItem = li.querySelector("a").split("#")[1];
+      selectListToMap(li);
     }
   });
 }
 
-function showRefreshListButton() {
-  document.querySelector('.reload').classList.remove('hidden');
+// function to set the selected item to the map
+function selectListToMap(item) {
+  // map.setLayoutProperty('points', 'icon-image',
+  //   [
+  //     'match',
+  //     ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+  //     parseInt(item.dataset.id), 'pinShoeSelected', //image when id is the clicked feature id
+  //     'pinShoe' // default
+  //   ]
+  // );
+  map.setCenter(item.dataset.latlong.split(','));
 }
 
+
+function showRefreshListButton() {
+  document.querySelector(".reload").classList.remove("hidden");
+}
 
 /*window.addEventListener('resize', function(event) {
     //make sure searchbox stickies when intro scales responsiveness
