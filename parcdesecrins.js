@@ -696,23 +696,24 @@ function activateList(data) {
     const li = e.target.closest(".uui-blogsection01_item");
     li.classList.toggle("selected");
     if (li.classList.contains("selected")) {
-      selectedItem = parseInt(li.dataset.id);
-      selectListToMap(selectedItem);
+      //selectedItem = li.querySelector("a").split("#")[1];
+      selectListToMap(li);
     }
   });
 }
 
 // function to communicate from list to map
-function selectListToMap(itemId) {
+function selectListToMap(item) {
   const haha = map.getLayoutProperty('point-layer', 'icon-image',
     [
       'match',
       ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-      parseInt(itemId), 'restaurant+walk-active', //image when id is the clicked feature id
+      parseInt(item.dataset.id), 'restaurant+walk-active', //image when id is the clicked feature id
       'restaurant+walk-active' // default
     ]
   );
-  console.log("parseInt(item.dataset.id)]" + itemId);
+  console.log("parseInt(item.dataset.lonlat)]" + parseInt(item.dataset.lonlat));
+  console.log("parseInt(item.dataset.id)]" + parseInt(item.dataset.id));
   console.log("haha" + haha);
   // change the icon of the selected item to the active version
   // map.addLayer({
@@ -734,11 +735,11 @@ function selectListToMap(itemId) {
   //     "icon-ignore-placement": true, // icon will not push away underlaying village names.
   //   },
   // });
-  map.setLayoutProperty('point-layer', 'icon-image', [
+  map.setLayoutProperty('point-layer', 'icon-image',[
       'case',
-      ['==', ['get', 'id'], parseInt(itemId)], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+      ['==', ['get', 'id'], parseInt(item.dataset.id)], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
       'restaurant+walk-active', //image when id is the clicked feature id
-      ['get', 'icon'] // default icon
+      ['get', 'icon'] // default
     ]
   );
 
