@@ -682,7 +682,7 @@ function activateList(data) {
   listItems.forEach((div, index) => {
     if (items[index]) {
       div.setAttribute("data-id", items[index].i);
-      div.setAttribute("data-latlong", items[index].lat + "," + items[index].lon);
+      div.setAttribute("data-lonlat", items[index].lon + "," + items[index].lat);
     }
   });
 
@@ -707,7 +707,7 @@ function selectListToMap(item) {
   //     'pinShoe' // default
   //   ]
   // );
-  map.setCenter(item.dataset.latlong.split(','));
+  map.setCenter(item.dataset.lonlat.split(','));
 }
 
 
