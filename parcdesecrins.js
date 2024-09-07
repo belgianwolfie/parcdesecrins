@@ -662,10 +662,12 @@ function createShopLink(card) {
   return "/shop-detail?id=" + card.author;
 }
 
-function getRecId(card) {
 
-  return card.id;
+function cardsMounted() {
+  console.log("cards mounted");
+
 }
+
 
 
 function showRefreshListButton() {
