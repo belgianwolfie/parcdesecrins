@@ -733,6 +733,15 @@ function selectMapToList(element) {
   const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.properties.id}"]`);
   listSelected.classList.add('selected');
   listSelected.scrollIntoView({behavior: 'smooth', block: 'center'});
+  // Adjust the scroll position with an offset after a delay
+  setTimeout(() => {
+    const offset = 50;  // Adjust this value for your desired offset
+    window.scrollBy({
+      top: -offset,  // Scroll up (negative value for offset)
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, 300);  // The delay ensures scrollIntoView finishes first
 }
 
 function cleanSelection() {
