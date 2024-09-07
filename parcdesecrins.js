@@ -681,9 +681,9 @@ function activateList() {
     const li = e.target.closest('.uui-blogsection01_item');
     li.classList.toggle('selected');
     if (li.classList.contains('selected')) {
-      selectedItem = parseInt(li.querySelector('a'));
+      selectedItem = li.querySelector('a');
       //selectListToMap(li);
-      console.log("selectedItem: " + selectedItem);
+      console.log("selectedItem: " + selectedItem.href);
     }
   });
 }
