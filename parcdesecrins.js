@@ -456,6 +456,7 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
   });
 
   // /* start: if you want circles in stead of icons
+
   map.addLayer({
     id: "point-layer",
     type: "symbol",
@@ -703,7 +704,7 @@ function activateList(data) {
 
 // function to communicate from list to map
 function selectListToMap(item) {
-
+  map.getLayoutProperty('point-layer', 'icon-image');
   // change the icon of the selected item to the active version
   map.setLayoutProperty('point-layer', 'icon-image',
     [
