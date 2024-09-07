@@ -664,7 +664,7 @@ function createShopLink(card) {
 
 
 function cardLoaded(card) {
-  console.log("card loaded");
+  console.log("card loaded" + card.id);
 
 }
 
