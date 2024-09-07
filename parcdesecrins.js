@@ -704,7 +704,14 @@ function activateList(data) {
 
 // function to communicate from list to map
 function selectListToMap(item) {
-  const haha = map.getLayoutProperty('point-layer', 'icon-image');
+  const haha = map.getLayoutProperty('point-layer', 'icon-image',
+    [
+      'match',
+      ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+      parseInt(item.dataset.id), 'restaurant+walk-active', //image when id is the clicked feature id
+      'restaurant+walk-active' // default
+    ]
+  );
   console.log("haha" + haha);
   // change the icon of the selected item to the active version
   map.setLayoutProperty('point-layer', 'icon-image',
