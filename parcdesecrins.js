@@ -687,7 +687,7 @@ function activateList(data) {
   });
 
   listContainer.addEventListener("click", (e) => {
-    //cleanSelection();
+    cleanSelection();
     const li = e.target.closest(".uui-blogsection01_item");
     li.classList.toggle("selected");
     if (li.classList.contains("selected")) {
@@ -710,6 +710,19 @@ function selectListToMap(item) {
   map.setCenter(item.dataset.lonlat.split(','));
 }
 
+
+function cleanSelection() {
+  //selectedItem = null;
+  //map.setLayoutProperty('points', 'icon-image', 'pinShoe');
+  cleanListSelection();
+}
+
+function cleanListSelection() {
+  const listSelected = document.querySelector('.uui-blogsection01_item.selected');
+  if (listSelected) {
+    listSelected.classList.remove('selected');
+  }
+}
 
 function showRefreshListButton() {
   document.querySelector(".reload").classList.remove("hidden");
