@@ -738,7 +738,7 @@ function selectListToMap(item) {
       'case',
       ['==', ['get', 'id'], parseInt(item.dataset.id)], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
       'restaurant+walk-active', //image when id is the clicked feature id
-      ['get', 'icon'] // default
+      ['get', 'icon'] // default icon
     ]
   );
 
