@@ -697,7 +697,7 @@ function activateList(data) {
     li.classList.toggle("selected");
     if (li.classList.contains("selected")) {
       selectedItem = parseInt(li.dataset.id);
-      selectListToMap(selectItem);
+      selectListToMap(selectedItem);
     }
   });
 }
