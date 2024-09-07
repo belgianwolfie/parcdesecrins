@@ -669,6 +669,7 @@ function createShopLink(card) {
 // abusing the x-show  (see webflow on the card) functionality from framework.js to inject an id into the card
 function cardLoaded(card) {
   //console.log("card loaded" + card.id);
+  console.log(this);
   return "#card-" + card.id;
 }
 
@@ -681,9 +682,9 @@ function activateList() {
     const li = e.target.closest('.uui-blogsection01_item');
     li.classList.toggle('selected');
     if (li.classList.contains('selected')) {
-      selectedItem = li.querySelector('a');
+      selectedItem = li.querySelector('a').split('#')[1];
       //selectListToMap(li);
-      console.log("selectedItem: " + selectedItem.href);
+      console.log("selectedItem: " + selectedItem.href.split('#')[1]);
     }
   });
 }
