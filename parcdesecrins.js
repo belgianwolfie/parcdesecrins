@@ -712,7 +712,7 @@ function selectListToMap(item) {
       'restaurant+walk-active' // default
     ]
   );
-  console.log("parseInt(item.dataset.id)]" + parseInt(item.dataset.id));
+  console.log("parseInt(item.dataset.id)]" + item);
   console.log("haha" + haha);
   // change the icon of the selected item to the active version
   // map.addLayer({
