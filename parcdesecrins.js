@@ -732,8 +732,7 @@ function selectMapToList(element) {
 
   const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.properties.id}"]`);
   listSelected.classList.add('selected');
-  listSelected.scrollIntoView({behavior: 'smooth', block: 'center'});
-
+  listSelected.scrollIntoView({behavior: 'smooth', block: 'center'}); // added offset in webflow custom property: scroll-margin-top
 }
 
 function cleanSelection() {
