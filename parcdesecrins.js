@@ -669,7 +669,7 @@ function createShopLink(card) {
 // abusing the x-show  (see webflow on the card) functionality from framework.js to inject an id into the card
 function cardLoaded(card) {
   //console.log("card loaded" + card.id);
-  console.log(this);
+
   return "#card-" + card.id;
 }
 
@@ -685,7 +685,7 @@ const items = data.map(item => {
 });
 console.log(items);
 
-console.log(ids);
+
   let listContainer = document.querySelector('.uui-blogsection01_list');
   const listItems = listContainer.querySelectorAll('.uui-blogsection01_item');
   listItems.forEach((div, index) => {
