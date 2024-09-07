@@ -712,8 +712,8 @@ function selectListToMap(item) {
       'restaurant+walk-active' // default
     ]
   );
-  console.log("parseInt(item.dataset.lonlat)]" + parseInt(item.dataset.lonlat));
-  console.log("parseInt(item.dataset.id)]" + parseInt(item.dataset.id));
+  console.log("parseInt(item.dataset.lonlat)]" + item.dataset.lonlat);
+  console.log("parseInt(item.dataset.id)]" + item.dataset.id);
   console.log("haha" + haha);
   // change the icon of the selected item to the active version
   // map.addLayer({
