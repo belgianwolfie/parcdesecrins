@@ -732,7 +732,7 @@ function selectMapToList(element) {
 
   const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.properties.id}"]`);
   listSelected.classList.add('selected');
-  listSelected.scrollIntoView({behavior: 'smooth', block: 'start'});
+  listSelected.scrollIntoView({behavior: 'smooth', block: 'center'});
   // Adjust the scroll position with an offset after a delay
   setTimeout(() => {
     const offset = 10;  // Adjust this value for your desired offset
