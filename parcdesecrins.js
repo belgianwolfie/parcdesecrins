@@ -750,6 +750,14 @@ function showRefreshListButton() {
   document.querySelector(".reload").classList.remove("hidden");
 }
 
+function getRenderedFeatures(point) {
+  //if the point is null, it is searched within the bounding box of the map view
+  const features = map.queryRenderedFeatures(point, {
+    layers: ['points']
+  });
+  return features;
+}
+
 /*window.addEventListener('resize', function(event) {
     //make sure searchbox stickies when intro scales responsiveness
     console.log($( "#intro" ).height());
