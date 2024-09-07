@@ -501,23 +501,26 @@ map.on("load", async () => {
 
   map.loadImage(googleBucketUrl + "/map/restaurant+walk.png", (error, image) => {
     if (error) throw error;
-
     map.addImage("restaurant+walk", image);
 
-    map.loadImage(googleBucketUrl + "/map/r-cluster.png", (error, image) => {
+    map.loadImage(googleBucketUrl + "/map/restaurant+walk-active.png", (error, image) => {
       if (error) throw error;
+      map.addImage("restaurant+walk-active", image);
 
-      map.addImage("r-cluster", image);
+      map.loadImage(googleBucketUrl + "/map/r-cluster.png", (error, image) => {
+        if (error) throw error;
+        map.addImage("r-cluster", image);
 
-      map.loadImage(
-        googleBucketUrl + "/map/w-cluster.png", // Replace with your image URL
-        (error, image) => {
-          if (error) throw error;
+        map.loadImage(
+          googleBucketUrl + "/map/w-cluster.png", // Replace with your image URL
+          (error, image) => {
+            if (error) throw error;
 
-          map.addImage("w-cluster", image);
-          getData();
-        }
-      );
+            map.addImage("w-cluster", image);
+            getData();
+          }
+        );
+      });
     });
   });
 
@@ -698,22 +701,23 @@ function activateList(data) {
   });
 }
 
-// function to set the selected item to the map
+// function to communicate from list to map
 function selectListToMap(item) {
-  // map.setLayoutProperty('points', 'icon-image',
-  //   [
-  //     'match',
-  //     ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-  //     parseInt(item.dataset.id), 'pinShoeSelected', //image when id is the clicked feature id
-  //     'pinShoe' // default
-  //   ]
-  // );
+
+  // change the icon of the selected item to the active version
+  map.setLayoutProperty('point-layer', 'icon-image',
+    [
+      'match',
+      ['id'], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+      parseInt(item.dataset.id), 'restaurant+walk-active', //image when id is the clicked feature id
+      'pinShoe' // default
+    ]
+  );
 
   map.flyTo({
-    center: item.dataset.lonlat.split(',')
+    center: item.dataset.lonlat.split(","),
   });
 }
-
 
 function cleanSelection() {
   //selectedItem = null;
@@ -722,9 +726,9 @@ function cleanSelection() {
 }
 
 function cleanListSelection() {
-  const listSelected = document.querySelector('.uui-blogsection01_item.selected');
+  const listSelected = document.querySelector(".uui-blogsection01_item.selected");
   if (listSelected) {
-    listSelected.classList.remove('selected');
+    listSelected.classList.remove("selected");
   }
 }
 
