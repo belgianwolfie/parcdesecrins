@@ -594,7 +594,7 @@ map.on("load", async () => {
 
       new maptilersdk.Popup()
         .setLngLat(coordinates)
-        .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt=""></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
+        .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt="" class="popup-image"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
           'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
         .addTo(map); // style popup in webform, copy html and paste it here
 
