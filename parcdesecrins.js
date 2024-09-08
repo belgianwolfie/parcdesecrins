@@ -709,11 +709,11 @@ function activateList(data) {
 
       div.addEventListener("mouseenter", (e) => {
         cleanSelection();
-        const li = e.target.closest(".uui-blogsection01_item");
-        li.classList.toggle("selected");
-        if (li.classList.contains("selected")) {
+        //const li = e.target.closest(".uui-blogsection01_item");
+        e.classList.toggle("selected");
+        if (e.classList.contains("selected")) {
           //selectedItem = li.querySelector("a").split("#")[1];
-          selectListToMap(li);
+          selectListToMap(e);
         }
       });
     }
