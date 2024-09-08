@@ -363,13 +363,10 @@ function getUniqueIcons(dataGeoJson) {
 
   const uniqueIcons = new Set();
 
-
-
   // Loop through the "features" array and extract "icon" values
   dataGeoJson.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
-
-        console.log("property" + JSON.stringify(feature.properties));
+      console.log("property" + JSON.stringify(feature.properties));
 
       uniqueIcons.add(feature.properties.icon);
     }
@@ -593,10 +590,17 @@ map.on("load", async () => {
       }
 
       // Construct the popup and set its content,
-      new maptilersdk.Popup({offset: 20})
+      new maptilersdk.Popup({ offset: 20 })
         .setLngLat(coordinates)
-        .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt="" class="popup-image"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
-          'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
+        .setHTML(
+          '<div class="popup"><div class="popup-imgwrap"><img src="' +
+            main_image +
+            '" loading="lazy" alt="" class="popup-image"></div><div class="popup-txtwrap">' +
+            mag +
+            " and tsunami: " +
+            tsunami +
+            "This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>"
+        )
         .setMaxWidth("360px")
         .addTo(map); // style popup in webform, copy html and paste it here
 
@@ -707,6 +711,7 @@ function activateList(data) {
       div.setAttribute("data-id", items[index].i);
       div.setAttribute("data-lonlat", items[index].lon + "," + items[index].lat);
 
+      // on mouseenter : change icon on map
       div.addEventListener("mouseenter", (e) => {
         cleanSelection();
         //const li = e.target.closest(".uui-blogsection01_item");
@@ -716,33 +721,39 @@ function activateList(data) {
           selectListToMap(div);
         }
       });
+
+      // on click : fly to marker and center
+      div.querySelector(".fly-to-marker").addEventListener("click", (e) => {
+        console.log("click on fly to marker");
+        //const li = e.target.closest(".uui-blogsection01_item");
+        //selectedItem = li.querySelector("a").split("#")[1];
+        flyToMarker(div);
+      });
     }
   });
-
-
 }
 
 // function to communicate from LIST to MAP
 function selectListToMap(item) {
- map.setLayoutProperty('point-layer', 'icon-image',[
-      'case',
-      ['==', ['get', 'id'], item.dataset.id], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
-      'restaurant+walk-active', //image when id is the clicked feature id
-      ['get', 'icon'] // default
-    ]
-  );
-
-  // map.flyTo({
-  //   center: item.dataset.lonlat.split(","),
-  // });
+  map.setLayoutProperty("point-layer", "icon-image", [
+    "case",
+    ["==", ["get", "id"], item.dataset.id], // get the feature id (make sure your data has an id set or use generateIds for GeoJSON sources
+    "restaurant+walk-active", //image when id is the clicked feature id
+    ["get", "icon"], // default
+  ]);
 }
 
+function flyToMarker(item) {
+  map.flyTo({
+    center: item.dataset.lonlat.split(","),
+  });
+}
 // function to communicate from MAP to LIST
 function selectMapToList(element) {
   cleanListSelection();
 
   const listSelected = document.querySelector(`.uui-blogsection01_item[data-id="${element.properties.id}"]`);
-  listSelected.classList.add('selected');
+  listSelected.classList.add("selected");
   //listSelected.scrollIntoView({behavior: 'smooth', block: 'center'}); // added offset in webflow custom property: scroll-margin-top
 }
 
@@ -766,7 +777,7 @@ function showRefreshListButton() {
 function getRenderedFeatures(point) {
   //if the point is null, it is searched within the bounding box of the map view
   const features = map.queryRenderedFeatures(point, {
-    layers: ['point-layer']
+    layers: ["point-layer"],
   });
   return features;
 }
