@@ -655,8 +655,8 @@ map.on("load", async () => {
   const mapStyle = map.getStyle();
 
   if (urlParams.get('q')) {
-    const results = await maptilersdk.geocoding.forward({
-      query:urlParams.get('q'),
+    const results = await maptilersdk.geocoding.forward(urlParams.get('q'),{
+
       bbox:ecrinsBounds,  // limit search to ecrins bounds
     });
     //ecrinsBounds
