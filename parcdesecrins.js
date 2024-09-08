@@ -593,17 +593,6 @@ map.on("load", async () => {
       }
 
       // Construct the popup and set its content,
-      const markerHeight = 10, markerRadius = 20, linearOffset = 20;
-      const popupOffsets = {
-      'top': [0, 0],
-      'top-left': [0,0],
-      'top-right': [0,0],
-      'bottom': [linearOffset, (markerHeight - markerRadius + linearOffset) * -2],
-      'bottom-left': [linearOffset, (markerHeight - markerRadius + linearOffset) * -2],
-      'bottom-right': [-linearOffset, (markerHeight - markerRadius + linearOffset) * -2],
-      'left': [markerRadius, (markerHeight - markerRadius) * -1],
-      'right': [-markerRadius, (markerHeight - markerRadius) * -1]
-      };
       new maptilersdk.Popup({offset: 20})
         .setLngLat(coordinates)
         .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt="" class="popup-image"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
@@ -701,7 +690,7 @@ function cardLoaded(card) {
 // on the webflow side
 function activateList(data) {
   // see : https://docs.maptiler.com/sdk-js/examples/list-of-places/
-  console.log(data);
+  //console.log(data);
   const items = data.map((item) => {
     return {
       i: item.id,
@@ -720,7 +709,7 @@ function activateList(data) {
     }
   });
 
-  listContainer.addEventListener("click", (e) => {
+  listContainer.addEventListener("mouseenter", (e) => {
     cleanSelection();
     const li = e.target.closest(".uui-blogsection01_item");
     li.classList.toggle("selected");
@@ -741,9 +730,9 @@ function selectListToMap(item) {
     ]
   );
 
-  map.flyTo({
-    center: item.dataset.lonlat.split(","),
-  });
+  // map.flyTo({
+  //   center: item.dataset.lonlat.split(","),
+  // });
 }
 
 // function to communicate from MAP to LIST
