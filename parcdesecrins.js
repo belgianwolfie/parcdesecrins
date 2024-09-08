@@ -710,10 +710,10 @@ function activateList(data) {
       div.addEventListener("mouseenter", (e) => {
         cleanSelection();
         //const li = e.target.closest(".uui-blogsection01_item");
-        e.classList.toggle("selected");
-        if (e.classList.contains("selected")) {
+        div.classList.toggle("selected");
+        if (div.classList.contains("selected")) {
           //selectedItem = li.querySelector("a").split("#")[1];
-          selectListToMap(e);
+          selectListToMap(div);
         }
       });
     }
