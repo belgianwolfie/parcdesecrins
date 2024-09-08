@@ -15,6 +15,8 @@
  * Then we convert that data to GeoJson format on the fly to be used in the map
  * Then we add it to the map with loadCustomMarkersAndLayers(dataGeoJson);
 
+
+ * The popup is styled in Webflow (invisble but lives in map-wrapper) and then html is copied into source code below.
  */
 
 // Defaults
@@ -160,7 +162,7 @@ function getData() {
             const dataGeoRaw =
               `{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },` +
               `"features": [${data.map((item) => {
-                return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude} ] } }`;
+                return `{ "type": "${item.type}", "properties": { "id": "${item.id}", "main_image": "${item.main_image}","mag": 1.43, "time": 1507424832518, "felt": null, "tsunami": 1, "icon" : "restaurantz" }, "geometry": { "type": "Point", "coordinates": [ ${item.longitude}, ${item.latitude} ] } }`;
               })}]}`;
 
             const dataGeoJson = JSON.parse(dataGeoRaw);
@@ -574,6 +576,7 @@ map.on("load", async () => {
 
       var coordinates = features[0].geometry.coordinates.slice();
       var mag = features[0].properties.mag;
+      var main_image = features[0].properties.main_image;
       var tsunami;
 
       if (features[0].properties.tsunami === 1) {
@@ -591,7 +594,7 @@ map.on("load", async () => {
 
       new maptilersdk.Popup()
         .setLngLat(coordinates)
-        .setHTML('<div class="popup"><div class="popup-imgwrap"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
+        .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt=""></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
           'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
         .addTo(map); // style popup in webform, copy html and paste it here
 
