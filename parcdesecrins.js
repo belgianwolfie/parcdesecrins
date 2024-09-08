@@ -604,7 +604,7 @@ map.on("load", async () => {
       'left': [markerRadius, (markerHeight - markerRadius) * -1],
       'right': [-markerRadius, (markerHeight - markerRadius) * -1]
       };
-      new maptilersdk.Popup({offset: 110})
+      new maptilersdk.Popup({offset: 20})
         .setLngLat(coordinates)
         .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt="" class="popup-image"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
           'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
