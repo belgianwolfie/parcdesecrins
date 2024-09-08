@@ -366,9 +366,9 @@ function getUniqueIcons(dataGeoJson) {
   // Loop through the "features" array and extract "icon" values
   dataGeoJson.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
-      feature.properties.forEach((property) => {
-        console.log("property" + property);
-      });
+
+        console.log("property" + eature.properties);
+
       uniqueIcons.add(feature.properties.icon);
     }
   });
