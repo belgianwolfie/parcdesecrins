@@ -706,18 +706,20 @@ function activateList(data) {
       console.log("index " + index);
       div.setAttribute("data-id", items[index].i);
       div.setAttribute("data-lonlat", items[index].lon + "," + items[index].lat);
+
+      div.addEventListener("mouseenter", (e) => {
+        cleanSelection();
+        const li = e.target.closest(".uui-blogsection01_item");
+        li.classList.toggle("selected");
+        if (li.classList.contains("selected")) {
+          //selectedItem = li.querySelector("a").split("#")[1];
+          selectListToMap(li);
+        }
+      });
     }
   });
 
-  listItems.addEventListener("mouseenter", (e) => {
-    cleanSelection();
-    const li = e.target.closest(".uui-blogsection01_item");
-    li.classList.toggle("selected");
-    if (li.classList.contains("selected")) {
-      //selectedItem = li.querySelector("a").split("#")[1];
-      selectListToMap(li);
-    }
-  });
+
 }
 
 // function to communicate from LIST to MAP
