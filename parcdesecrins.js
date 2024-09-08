@@ -32,6 +32,11 @@ const initialData = {
   listings: [],
 };
 
+// Bounding box for Parc des Ecrins to limit geocoding search results
+// sw = 44.488283, 5.784014
+// ne = 45.193431, 6.811180
+const ecrinsBounds = [5.784014, 44.488283, 6.811180, 45.193431];
+
 const urlParams = new URLSearchParams(window.location.search);
 
 // GENERAL SETTINGS
@@ -650,8 +655,11 @@ map.on("load", async () => {
   const mapStyle = map.getStyle();
 
   if (urlParams.get('q')) {
-    const results = await maptilersdk.geocoding.forward(urlParams.get('q'));
-
+    const results = await maptilersdk.geocoding.forward({
+      query:urlParams.get('q'),
+      bbox:ecrinsBounds,  // limit search to ecrins bounds
+    });
+    //ecrinsBounds
     console.log(results);
     // map.getSource('search-results').setData(results);
     // if (results.features[0]) {
