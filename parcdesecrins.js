@@ -599,8 +599,8 @@ map.on("load", async () => {
       'top-left': [0,0],
       'top-right': [0,0],
       'bottom': [linearOffset, (markerHeight - markerRadius + linearOffset) * -2],
-      'bottom-left': [linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
-      'bottom-right': [-linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+      'bottom-left': [linearOffset, (markerHeight - markerRadius + linearOffset) * -2],
+      'bottom-right': [-linearOffset, (markerHeight - markerRadius + linearOffset) * -2],
       'left': [markerRadius, (markerHeight - markerRadius) * -1],
       'right': [-markerRadius, (markerHeight - markerRadius) * -1]
       };
