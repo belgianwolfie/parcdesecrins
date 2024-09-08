@@ -592,7 +592,19 @@ map.on("load", async () => {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
 
-      new maptilersdk.Popup()
+      // Construct the popup and set its content,
+      const markerHeight = 50, markerRadius = 10, linearOffset = 25;
+      const popupOffsets = {
+      'top': [0, 0],
+      'top-left': [0,0],
+      'top-right': [0,0],
+      'bottom': [0, -markerHeight],
+      'bottom-left': [linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+      'bottom-right': [-linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+      'left': [markerRadius, (markerHeight - markerRadius) * -1],
+      'right': [-markerRadius, (markerHeight - markerRadius) * -1]
+      };
+      new maptilersdk.Popup({offset: popupOffsets})
         .setLngLat(coordinates)
         .setHTML('<div class="popup"><div class="popup-imgwrap"><img src="' + main_image + '" loading="lazy" alt="" class="popup-image"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
           'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
