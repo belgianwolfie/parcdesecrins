@@ -709,7 +709,7 @@ function activateList(data) {
     }
   });
 
-  listContainer.addEventListener("mouseenter", (e) => {
+  listItems.addEventListener("mouseenter", (e) => {
     cleanSelection();
     const li = e.target.closest(".uui-blogsection01_item");
     li.classList.toggle("selected");
