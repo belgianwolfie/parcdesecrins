@@ -593,7 +593,7 @@ map.on("load", async () => {
       }
 
       // Construct the popup and set its content,
-      const markerHeight = 50, markerRadius = 10, linearOffset = 15;
+      const markerHeight = 10, markerRadius = 10, linearOffset = 15;
       const popupOffsets = {
       'top': [0, 0],
       'top-left': [0,0],
