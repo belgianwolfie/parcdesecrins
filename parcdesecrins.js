@@ -588,7 +588,8 @@ map.on("load", async () => {
 
       new maptilersdk.Popup()
         .setLngLat(coordinates)
-        .setHTML("magnitude: " + mag + "<br>Was there a tsunami?: " + tsunami)
+        .setHTML('<div class="popup"><div class="popup-imgwrap"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
+          'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
         .addTo(map);
 
       // Scroll to the item in the list belonging to this marker
