@@ -361,11 +361,14 @@ function getUniqueIcons(dataGeoJson) {
 
   const uniqueIcons = new Set();
 
-  console.log("dataGeoJson.features" + dataGeoJson.features);
+
 
   // Loop through the "features" array and extract "icon" values
   dataGeoJson.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
+      feature.properties.forEach((property) => {
+        console.log("property" + property);
+      });
       uniqueIcons.add(feature.properties.icon);
     }
   });
@@ -590,7 +593,7 @@ map.on("load", async () => {
         .setLngLat(coordinates)
         .setHTML('<div class="popup"><div class="popup-imgwrap"></div><div class="popup-txtwrap">' + mag + ' and tsunami: ' + tsunami +
           'This is a small text but I&nbsp;am not sure if it is ok to have this here so big and tall what do you think.</div></div>')
-        .addTo(map);
+        .addTo(map); // style popup in webform, copy html and paste it here
 
       // Scroll to the item in the list belonging to this marker
       selectMapToList(element);
