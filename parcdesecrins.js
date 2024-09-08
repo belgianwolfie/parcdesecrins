@@ -367,7 +367,7 @@ function getUniqueIcons(dataGeoJson) {
   dataGeoJson.features.forEach((feature) => {
     if (feature.properties && feature.properties.icon) {
 
-        console.log("property" + feature.properties);
+        console.log("property" + JSON.stringify(feature.properties));
 
       uniqueIcons.add(feature.properties.icon);
     }
