@@ -32,6 +32,8 @@ const initialData = {
   listings: [],
 };
 
+const urlParams = new URLSearchParams(window.location.search);
+
 // GENERAL SETTINGS
 const filterGroup = document.getElementById("filter-group");
 const iconSize = 0.6;
@@ -647,6 +649,16 @@ map.on("load", async () => {
 
   const mapStyle = map.getStyle();
 
+  if (urlParams.get('q')) {
+    const results = await maptilersdk.geocoding.forward(urlParams.get('q'));
+
+    console.log(results);
+    // map.getSource('search-results').setData(results);
+    // if (results.features[0]) {
+    //   map.fitBounds(results.features[0].bbox, {maxZoom: 19})
+    // }
+  }
+
   // // start: click on legend items
   // document
   //     .getElementById('kaka')
@@ -663,7 +675,8 @@ map.on("load", async () => {
   //         // filterBy(month);
   //     });
   // // end: click on legend items
-}); // end : map load
+
+}); // END MAP LOAD
 
 // When the user begins typing, hide the suggestions placeholder text
 $("#search").on("input", function () {
