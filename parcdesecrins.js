@@ -491,6 +491,8 @@ async function loadCustomMarkersAndLayers(dataGeoJson) {
 // CRUX
 map.on("load", async () => {
   console.log("map on load");
+  const bounds = map.getBounds();
+  console.log("bounds" + JSON.stringify(bounds));
 
   // const rw = await map.loadImage(googleBucketUrl + '/map/restaurant+walk.png');
   // map.addImage('restaurant+walk', rw);
