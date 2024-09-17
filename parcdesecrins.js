@@ -657,14 +657,15 @@ map.on("load", async () => {
   if (urlParams.get('q')) {
     const results = await maptilersdk.geocoding.forward(urlParams.get('q'),{
 
-      bbox:ecrinsBounds,  // limit search to ecrins bounds
+      //bbox:ecrinsBounds,  // limit search to ecrins bounds
     });
     //ecrinsBounds
     console.log(results);
     // map.getSource('search-results').setData(results);
-    // if (results.features[0]) {
-    //   map.fitBounds(results.features[0].bbox, {maxZoom: 19})
-    // }
+     if (results.features[0]) {
+      populateAutoSuggest(results.features);
+       map.fitBounds(results.features[0].bbox, {maxZoom: 19})
+     }
   }
 
   // // start: click on legend items
@@ -811,3 +812,27 @@ function getRenderedFeatures(point) {
     $("#intro-wrapper").css({ top: $( "#navbar" ).height() - $( "#intro" ).height()  });
 }, true);
 */
+
+
+// Function to create list items and append them to the div
+function populateAutoSuggest(featuresArray) {
+  const autosuggestDiv = document.getElementById('autosuggest');
+
+  // Clear existing content
+  autosuggestDiv.innerHTML = '';
+
+  // Create a <ul> element to hold the list items
+  const ul = document.createElement('ul');
+
+  featuresArray.forEach(feature => {
+      // Create a <li> element for each place_name
+      const li = document.createElement('li');
+      li.textContent = feature.place_name;
+
+      // Append the list item to the <ul>
+      ul.appendChild(li);
+  });
+
+  // Append the <ul> to the autosuggest div
+  autosuggestDiv.appendChild(ul);
+}
