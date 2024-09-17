@@ -664,7 +664,10 @@ map.on("load", async () => {
     // map.getSource('search-results').setData(results);
      if (results.features[0]) {
       populateAutoSuggest(results.features);
-       map.fitBounds(results.features[0].bbox, {maxZoom: 19})
+       //map.fitBounds(results.features[0].bbox, {maxZoom: 19})
+       map.flyTo({
+        center: results.features[0].center,
+      });
      }
   }
 
