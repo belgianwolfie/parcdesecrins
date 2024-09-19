@@ -66,6 +66,10 @@ var map = new maptilersdk.Map({
     showCompass: false,
   })
 );
+const gc = new maptilersdkMaptilerGeocoder.GeocodingControl({});
+
+map.addControl(gc, 'top-left');
+
 // disable map rotation using right click + drag
 map.dragRotate.disable();
 
