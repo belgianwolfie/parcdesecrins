@@ -681,40 +681,40 @@ map.on("load", async () => {
      }
   }
 
-  // Enable input through search box
-  const locqueryInput = document.querySelector('input[name="locquery"]');
+  // // Enable input through search box
+  // const locqueryInput = document.querySelector('input[name="locquery"]');
 
-  let debounceTimer; // Timer variable for debouncing
+  // let debounceTimer; // Timer variable for debouncing
 
-  // Event listener for the 'input' event
-  locqueryInput.addEventListener('input', function() {
-      // Clear the previous timer
-      clearTimeout(debounceTimer);
+  // // Event listener for the 'input' event
+  // locqueryInput.addEventListener('input', function() {
+  //     // Clear the previous timer
+  //     clearTimeout(debounceTimer);
 
-      // Set a new timer with 300ms delay
-      debounceTimer = setTimeout(function() {
-          // Call the function after 300ms
-          handleUserInput();
-      }, 300);
-  });
+  //     // Set a new timer with 300ms delay
+  //     debounceTimer = setTimeout(function() {
+  //         // Call the function after 300ms
+  //         handleUserInput();
+  //     }, 300);
+  // });
 
-    async function handleUserInput() {
-      // docs https://docs.maptiler.com/client-js/geocoding/
-      const results = await maptilersdk.geocoding.forward(document.getElementsByName("locquery")[0].value,{
-        proximity: [6.271158,44.825107], // results closer to parc des ecrins get priority
-        //bbox:ecrinsBounds,  // limit search to ecrins bounds
-      });
-      //ecrinsBounds
-      console.log(results);
-      // map.getSource('search-results').setData(results);
-       if (results.features[0]) {
-        populateAutoSuggest(results.features);
-         //map.fitBounds(results.features[0].bbox, {maxZoom: 19})
-         map.flyTo({
-          center: results.features[0].center,
-        });
-       }
-    }
+  //   async function handleUserInput() {
+  //     // docs https://docs.maptiler.com/client-js/geocoding/
+  //     const results = await maptilersdk.geocoding.forward(document.getElementsByName("locquery")[0].value,{
+  //       proximity: [6.271158,44.825107], // results closer to parc des ecrins get priority
+  //       //bbox:ecrinsBounds,  // limit search to ecrins bounds
+  //     });
+  //     //ecrinsBounds
+  //     console.log(results);
+  //     // map.getSource('search-results').setData(results);
+  //      if (results.features[0]) {
+  //       populateAutoSuggest(results.features);
+  //        //map.fitBounds(results.features[0].bbox, {maxZoom: 19})
+  //        map.flyTo({
+  //         center: results.features[0].center,
+  //       });
+  //      }
+  //   }
 
   // // start: click on legend items
   // document
