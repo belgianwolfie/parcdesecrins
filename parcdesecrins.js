@@ -655,8 +655,10 @@ map.on("load", async () => {
   const mapStyle = map.getStyle();
 
   if (urlParams.get('q')) {
-    const results = await maptilersdk.geocoding.forward(urlParams.get('q'),{
 
+    // docs https://docs.maptiler.com/client-js/geocoding/
+    const results = await maptilersdk.geocoding.forward(urlParams.get('q'),{
+      proximity: [44.825107, 6.271158], // results closer to parc des ecrins get priority
       //bbox:ecrinsBounds,  // limit search to ecrins bounds
     });
     //ecrinsBounds
