@@ -68,9 +68,9 @@ var map = new maptilersdk.Map({
 );
 
 // Add the geocoder input
-const gc = new maptilersdkMaptilerGeocoder.GeocodingControl({});
-document.getElementById('maptilergeocoder').appendChild(gc.onAdd(map));
-map.addControl(gc, 'top-left');
+// const gc = new maptilersdkMaptilerGeocoder.GeocodingControl({});
+// document.getElementById('maptilergeocoder').appendChild(gc.onAdd(map));
+// map.addControl(gc, 'top-left');
 
 // disable map rotation using right click + drag
 map.dragRotate.disable();
