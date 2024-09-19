@@ -659,7 +659,6 @@ map.on("load", async () => {
     // docs https://docs.maptiler.com/client-js/geocoding/
     const results = await maptilersdk.geocoding.forward(urlParams.get('q'),{
       proximity: [6.271158,44.825107], // results closer to parc des ecrins get priority
-      country: "FR",
       //bbox:ecrinsBounds,  // limit search to ecrins bounds
     });
     //ecrinsBounds
