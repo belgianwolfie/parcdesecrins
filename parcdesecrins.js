@@ -66,7 +66,7 @@ var map = new maptilersdk.Map({
     showCompass: false,
   })
 );
-const gc = new maptilersdkMaptilerGeocoder.GeocodingControl({});
+const gc = new maptilersdk.MaptilerGeocoder.GeocodingControl({});
 
 map.addControl(gc, 'top-left');
 
